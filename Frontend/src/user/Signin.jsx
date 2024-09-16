@@ -11,8 +11,8 @@ const Signin = () => {
   const {user} = isAuthenticated()
   const navigate = useNavigate()
   const [values ,setValues] = useState({
-    email:'test1234@gmail.com',
-    password:'asdf1234',
+    email:'',
+    password:'',
     error:'',
     success:false,
     msg:'',
