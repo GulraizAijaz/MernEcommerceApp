@@ -28,7 +28,12 @@ app.use(cookieParser());
 
 
 // Database
-mongoose.connect(process.env.DATABASE).then(()=> console.log('DataBase Is Connected Mongo' ));  
+mongoose.connect(process.env.DATABASE).then(()=> {
+    console.log('DataBase Is Connected Mongo' )
+})
+.catch(err=>{
+    console.log(err)
+})
 
 
 
