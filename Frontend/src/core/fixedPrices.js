@@ -29,4 +29,5 @@ export const prices = [
         name : "More than $40",
         array : [40,100000]
     },
+    
 ]

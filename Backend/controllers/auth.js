@@ -55,7 +55,7 @@ try{
             //  create authenticate method in user model
             if(!userExist.authenticate(password)){
                 return res.status(401).json({
-                    error: 'email and pass dont match'
+                    err: 'email and pass dont match'
                 })
             }
         

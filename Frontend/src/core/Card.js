@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 // context
 import { useContext } from 'react';
 import { CartContext } from "../context/CartContext"
+import { isAuthenticated } from '../auth';
 const Card = ({ product,
                 productwidth = "w30",
                 details = false,
@@ -21,6 +22,8 @@ const Card = ({ product,
   const [redirect,setRedirect] = useState(false)
   const [count,setCount] = useState(product.count)
   const {updateCartItemsLength} = useContext(CartContext)
+  const {user} = isAuthenticated()
+  console.log(user)
 
   useEffect(() => {
     if (redirect) {
@@ -49,19 +52,31 @@ const Card = ({ product,
 }
 // add item to cart f(x)
   const addToCart = ()=>{
-    addItem(product,()=>{
+    if(user && user.role === 1){
       Swal.fire({
-        title: 'Product Added Successfuly!',
-        text: "Want to see Cart?If not press ESC key or tap outside this popup",
-        icon: 'question',
-        confirmButtonText: 'Yes'
-      }).then(res => {
-        if (res.isConfirmed) {
-          setRedirect(true)
-        }
-      });
-      updateCartItemsLength()
-  })
+        title: 'Cannot add to Cart',
+        text: "You Are Seller",
+        icon: 'error',
+        confirmButtonText: 'Okay'
+      })
+    }
+    
+    else{
+      addItem(product,()=>{
+        Swal.fire({
+          title: 'Product Added Successfuly!',
+          text: "Want to see Cart?If not press ESC key or tap outside this popup",
+          icon: 'success',
+          confirmButtonText: 'Yes'
+        }).then(res => {
+          if (res.isConfirmed) {
+            setRedirect(true)
+          }
+        });
+        updateCartItemsLength()
+    })
+    }
+    
 }
   
 
@@ -70,7 +85,7 @@ const Card = ({ product,
     const newCount = e.target.value < 1 ? 1 : e.target.value ;
     setCount(newCount)
     if(newCount >=1 ){
-      updateItem(productId,e.target.value)
+      updateItem(productId, newCount)
       updateCartUi(getCart())
     }
   }
@@ -94,6 +109,7 @@ const Card = ({ product,
       className='text-center bg-white text-xl w100' 
       type='number'
       value={count}
+      min={1}
       onChange={handleChange(product._id)}/>
     </div>
     )
@@ -156,7 +172,7 @@ const Card = ({ product,
               Sold: {product.sold}
             </p>
             <p className='bg-blue-500 font-black border-2 border-black m-1 '>
-                Category :  <span className='text-white'>{product.category.name}</span>
+                Category :  <span className='text-white'>{product.category ? product.category.name : "Uncategorized"}</span>
             </p>
             <p className='bg-blue-500 font-black border-2 border-black m-1 text-black '>
                             <span className='text-white'>{product.quantity > 0 ? (showAvailable()):(showUnavailable())}</span>

@@ -15,7 +15,7 @@ const Shop = ()=>{
     })
     const [categories,setCategories] = useState([])
     const [error,setError] = useState(false)
-    const [limit,setLimit] = useState(6)
+    const [limit,setLimit] = useState(20)
     const [skip,setSkip] = useState(0)
     const [size,setSize] = useState(0)
     const [filteredResults,setFilteredResults] = useState([])
@@ -104,9 +104,9 @@ const Shop = ()=>{
         <Layout title='Shop page'
         description={`Lets do some shopping today (${user})`}
         >
-        <div className='flex justify-between'>
-            <div className='w20 bg-green-500 '>
-                <p className='text-2xl text-center px-2 font-black'>Filter Products By Categories</p>
+        <div className='w100 flex justify-between flex-wrap'>
+            <div className='w20 cart-product bg-green-500 '>
+                <p className='text-2xl  px-2 font-black'>Filter Products By Categories</p>
                 <ul className='px-2 bg-pink-400'>
                     <CheckboxCategories categories={categories}
                     handleFilters={filters=>
@@ -114,7 +114,7 @@ const Shop = ()=>{
                         }
                     />
                 </ul>
-                <p className='text-2xl text-center px-2 font-black'>Filter Products By price ranges</p>
+                <p className='text-2xl  px-2 font-black'>Filter Products By price ranges</p>
                     <div className='bg-pink-400'>
                         <CheckboxPrices
                         prices={prices} 
@@ -125,7 +125,7 @@ const Shop = ()=>{
                     />
                     </div>
             </div>
-            <div className='w80 bg-pink-300'>
+            <div className='w80 cart-product bg-pink-300'>
             <div className='flex justify-evenly flex-wrap products-wrap'>
                 {filteredResults.map((p,i)=>(
                     <Card product={p} key={i}/>

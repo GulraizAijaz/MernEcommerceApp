@@ -20,6 +20,7 @@ const Checkout = ({products,updateCartUi}) => {
         address : "lahore",
         loading : false
     })
+    const {user} = isAuthenticated()
     const userId = isAuthenticated() && isAuthenticated().user._id
     const token = isAuthenticated() && isAuthenticated().token
 
@@ -169,7 +170,7 @@ const Checkout = ({products,updateCartUi}) => {
     const showCheckOut = ()=>{
         return(
             <div className=''>
-            {isAuthenticated()?(
+            {isAuthenticated() && user.role !== 1?(
                 <div className='w100 flex-wrap justify-center'>
                     <div className='w100 flex justify-center bg-blue-300 flex-wrap mt10'>
                             <h1 className='w100'>Enter Address</h1>
@@ -187,8 +188,8 @@ const Checkout = ({products,updateCartUi}) => {
             ):(
                 <Link to='/signin'>
                     
-                    <div className='w100 bg-red-500 text-black '>
-                    <button >sign in first to checkOut</button>
+                    <div className=' text-white font-bold rounded-xl w100 bg-blue-500 text-black p-2 my-4'>
+                    <button >Sign In with customer account</button>
                     </div>
                 </Link>
             )}

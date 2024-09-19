@@ -17,7 +17,7 @@ const UpdateSingleUser = ()=>{
     const [singleUser,setSingleUser] = useState({})
     const [updatedUser,setUpdatedUser] = useState({
         name :"",
-        role :"",
+        role :null,
     })
 
 
@@ -66,8 +66,6 @@ const UpdateSingleUser = ()=>{
     return(
     <Layout  title="Update this  User" description={` Update User`}
     className=''>
-        {JSON.stringify(singleUser)}
-        {JSON.stringify(updateUser)}
         <div className='w100 bg-gray-200 text-xl flex justify-center h100'>
             <div className='bg-yellow-200 p-2 w70 '>
                 <div className='py-1 w100 flex justify-center'>

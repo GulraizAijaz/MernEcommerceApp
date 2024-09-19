@@ -73,8 +73,11 @@ const Signin = () => {
       if(user && user.role ===1){
         return navigate('/admin/dashboard')
       }
-      else{
+      else if(user && user.role ===0){
         return navigate('/user/dashboard')
+      }
+      else{
+        return navigate('/')
       }
     }
   }, [redirectToRefferer, navigate]);

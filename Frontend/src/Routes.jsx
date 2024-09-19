@@ -6,8 +6,12 @@ import ErrorPage from './Errorroutes';
 import UserDashboard from './user/UserDashboard';
 import AdminDashboard from './user/AdminDashboard';
 import PrivateRoute from './auth/PrivateRoute';
+import UnAuthRoutes from './auth/UnAuthRoutes';
 import AdminRoute from './auth/AdminRoute';
 import AddCategory from './admin/AddCategory'
+import GetAllCategories from './admin/GetAllCategories';
+import UpdateCategory from './admin/UpdateCategory';
+import DeleteCategory from './admin/DeleteCategory';
 import AddProduct from './admin/AddProduct';
 import UpdateProduct from './admin/UpdateProduct';
 import Shop from './core/Shop';
@@ -25,7 +29,7 @@ const Routes = ()=> {
 
     const router = createBrowserRouter([
       {path:"/signin",
-      element:<><Signin/></>
+      element:<UnAuthRoutes><Signin/></UnAuthRoutes>
       },
       {path:"/",
       element:<><Home/></>,
@@ -34,7 +38,7 @@ const Routes = ()=> {
       },
       {
         path:'/signup',
-        element:<><Signup/></>
+        element:<UnAuthRoutes><Signup/></UnAuthRoutes>
       },
       {
         path : '/user/dashboard',
@@ -59,6 +63,18 @@ const Routes = ()=> {
       {
         path : '/create/category',
         element:<AdminRoute><AddCategory/></AdminRoute>
+      },
+      {
+        path : 'admin/category/manage',
+        element:<AdminRoute><GetAllCategories/></AdminRoute>
+      },
+      {
+        path : 'admin/category/update/:categoryId',
+        element:<AdminRoute><UpdateCategory/></AdminRoute>
+      },
+      {
+        path : 'admin/category/delete/:categoryId',
+        element:<AdminRoute><DeleteCategory/></AdminRoute>
       },
       {
         path : '/create/product',

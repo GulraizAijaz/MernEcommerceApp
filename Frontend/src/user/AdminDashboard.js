@@ -31,6 +31,11 @@ const AdminDashboard = () => {
         </Link>
         </li>
         <li className='border border-black w-full text-center text-xl'>
+        <Link to='/admin/category/manage'>
+              <div className='p-1'>Manage Category</div>
+        </Link>
+        </li>
+        <li className='border border-black w-full text-center text-xl'>
         <Link to='/create/product'>
               <div className='p-1'>Create Product</div>
         </Link>

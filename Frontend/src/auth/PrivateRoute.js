@@ -21,7 +21,7 @@ export const AdminRoute = ({ children }) => {
         }
     }, [navigate]);
 
-    return isAuthenticated() && isAuthenticated().user.role === 0  ? children : '(Customer routes!)';
+    return isAuthenticated() && isAuthenticated().user.role === 0  ? children : '(Customer routes! Sign in first)';
 };
 
 export default AdminRoute;

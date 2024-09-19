@@ -67,7 +67,6 @@ const DeleteUser = ()=>{
     return(
     <Layout  title="Delete this  User" description={` Delete this user permanently`}
     className=''>
-        {JSON.stringify(singleUser)}
         <div className='w100 bg-gray-200 text-xl flex justify-center h100'>
             <div className='bg-yellow-200 p-2 w70 '>
                 <div className='my-1 bg-green-300 py-1 w100 flex justify-center text-2xl'>

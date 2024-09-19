@@ -63,9 +63,11 @@ catch(err){
 
 exports.update = async(req,res)=>{
 try{
-    const category = req.category
-    category.name = req.body.name
-    const updatedcategory = await category.save()
+    const updatedcategory = await Category.findByIdAndUpdate(
+        {_id:req.body.categoryId},
+        { $set: { name: req.body.name} },
+        {new:true}
+    )
     if(!updatedcategory){
         return res.status(400).json({
             error : " cannot update category"
@@ -83,21 +85,20 @@ catch(err){
 
 
 exports.remove = async(req,res)=>{
-try{
-    let categoryId = req.category.id
-    const categoryRemoved = await Category.findByIdAndDelete(categoryId);
-    if(!categoryRemoved){
-      return res.status(400).json({
-        error : " cannot delete this category or category not found"
-      })
+    try{
+        const deletedCat = await Category.findByIdAndDelete(req.body.categoryId)
+        if(!deletedCat){
+            return res.status(400).json({
+                error : " cannot update category"
+            })
+        }
+        res.status(200).json({
+            msg: "category deleted!!",
+            deletedCat
+        })
     }
-    res.status(200).json({
-      msg: "category is deleted seccessfully",
-      category: categoryRemoved
-    })
-}
-catch(err){
-    console.log(err)
-}
+    catch(err){
+        console.log(err)
+    }
 }
     

@@ -8,8 +8,8 @@ const {isAuth,isAdmin,requireSignIn} = require('../controllers/auth')
 router.post("/category/create/:userId",requireSignIn,isAdmin,isAuth, create);
 router.get('/category/getcategories',getCategoriesList)
 router.get('/category/:categoryId',read)
-router.put("/category/update/:categoryId",requireSignIn,isAdmin,isAuth,update)
-router.delete("/category/delete/:categoryId",requireSignIn,isAdmin,isAuth,remove)
+router.put("/category/update/:userId",requireSignIn,isAdmin,isAuth,update)
+router.delete("/category/delete/:userId",requireSignIn,isAdmin,isAuth,remove)
 
 
 router.param("userId",userById)

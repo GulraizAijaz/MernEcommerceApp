@@ -21,6 +21,7 @@ catch(err){
         console.log(err)
 }
 }
+
 exports.addTransactionIdToCod = (req,res,next)=>{
      // making random string for transaction id
      const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -29,6 +30,7 @@ exports.addTransactionIdToCod = (req,res,next)=>{
          transactionId += characters.charAt(Math.floor(Math.random() * 9));
      }
     req.body.order.transaction_id = transactionId
+    // adding order type COD
     req.body.order.orderType = "Cash On Delivery"
     next()
     
@@ -38,7 +40,6 @@ exports.create = async(req,res)=>{
     try{
         req.profile.hashed_password = undefined
         req.body.order.user = req.profile
-        console.log(req.body.order.orderType)
         const order = await new Order(req.body.order)
         const orderCreated = await order.save()
         if(!orderCreated){

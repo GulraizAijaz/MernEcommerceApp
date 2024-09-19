@@ -58,6 +58,60 @@ export const getCategories = ()=>{
       return error
   })
 }
+export const getCategory = (id)=>{
+  return fetch(`${API}/category/${id}`,{
+    method:"GET",
+  })
+  .then(response=> {
+    // console.log(response)
+    return response.json()
+  })
+  .catch(error=> {
+      console.log(error)
+      return error
+  })
+}
+export const updateCategory = (userId,token,name,categoryId)=>{
+  console.log(name,userId,token,categoryId)
+  return fetch(`${API}/category/update/${userId}`,{
+    method:"PUT",
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',  // Include this header
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({name,categoryId})
+    
+  })
+  .then(response=> {
+    // console.log(response)
+    return response.json()
+  })
+  .catch(error=> {
+      console.log(error)
+      return error
+  })
+}
+export const deleteCategory = (userId,token,categoryId)=>{
+  return fetch(`${API}/category/delete/${userId}`,{
+    method:"DELETE",
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',  // Include this header
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({categoryId})
+    
+  })
+  .then(response=> {
+    // console.log(response)
+    return response.json()
+  })
+  .catch(error=> {
+      console.log(error)
+      return error
+  })
+}
 export const listOrders = (userId,token)=>{
   return fetch(`${API}/order/list/${userId}`,{
     method:"GET",

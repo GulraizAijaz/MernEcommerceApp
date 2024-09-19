@@ -43,22 +43,66 @@ exports.read = (req,res)=>{
     }
 
 }
-exports.update = async (req,res)=>{
-   try{
-        const userUpdated = await User.findByIdAndUpdate({_id:req.profile._id},{$set:req.body},{new:true})
-        if(!userUpdated){
-            return res.status(400).json({
-                error : "you are not authorized to perform this action"
-            })
-        }
-        userUpdated.hashed_password = undefined
-        userUpdated.salt = undefined
-        res.status(200).json(userUpdated)
-   }
-   catch(err){
-    console.log(err)
-   }
-}
+// exports.update = async (req,res)=>{
+//    try{
+//         const userUpdated = await User.findByIdAndUpdate(
+//             {_id:req.profile._id},
+//             { $set: { name: req.body.name,email: req.body.email, hashed_password: req.body.password } },
+//             {new:true})
+//         if(!userUpdated){
+//             return res.status(400).json({
+//                 error : "you are not authorized to perform this action"
+//             })
+//         }
+//         userUpdated.hashed_password = undefined
+//         userUpdated.salt = undefined
+//         res.status(200).json(userUpdated)
+//    }
+//    catch(err){
+//     console.log(err)
+//    }
+// }
+
+
+// chatgptt
+exports.update = async (req, res) => {
+    try {
+      // Find the user by their ID
+      let user = await User.findById(req.profile._id);
+      
+      // Check if user exists
+      if (!user) {
+        return res.status(400).json({
+          error: "User not found"
+        });
+      }
+  
+      // Update the user's fields
+      if (req.body.name) user.name = req.body.name;
+      if (req.body.email) user.email = req.body.email;
+  
+      // Check if password is provided and update it
+      if (req.body.password) {
+        user.password = req.body.password; // This will trigger the virtual field's `set` function and hash the password
+      }
+  
+      // Save the updated user
+      const userUpdated = await user.save();
+  
+      // Remove sensitive fields from the response
+      userUpdated.hashed_password = undefined;
+      userUpdated.salt = undefined;
+  
+      // Send back the updated user data
+      res.status(200).json(userUpdated);
+  
+    } catch (err) {
+      console.log(err);
+      return res.status(400).json({
+        error: "Could not update the user"
+      });
+    }
+  };
 
 
 
@@ -116,11 +160,10 @@ exports.addOrderToUserHistoryCod = async(req,res,next)=>{
     try{
         let history = []
         let products = req.body.order.products
-        const totalAmount =  products.reduce((currentValue, nextValue) => {
+        let totalAmount =  products.reduce((currentValue, nextValue) => {
                 return currentValue + (nextValue.count || 0) * (nextValue.price || 0);
             }, 0);
-        
-        console.log(totalAmount)
+            req.body.order.amount = totalAmount
             products.forEach((item) => {
                 history.push({
                     _id : item._id,
@@ -128,11 +171,10 @@ exports.addOrderToUserHistoryCod = async(req,res,next)=>{
                     description: item.description,
                     category: item.category,
                     quantity: item.count,
+                    amount : req.body.order.amount,
                     transaction_id: req.body.order.transaction_id || "server Transaction id static typedd",
-                    amount: totalAmount
                 })
             });
-
             let updatedHistory = await User.findOneAndUpdate(
                 {_id:req.profile._id},
                 {$push:{history:history}},
@@ -172,8 +214,11 @@ exports.purchaseHistory = async(req,res)=>{
 }
 exports.allUsers = async(req,res)=>{
     try{
+        console.log("admin id",req.profile._id)
         const users = await 
-        User.find()
+        User.find({
+            _id: { $ne: req.profile._id }
+        })
         .select("_id name email role phone dob createdAt updatedAt")
         .exec()
 
@@ -211,9 +256,15 @@ exports.userReadForAdmin = async(req,res)=>{
 
 exports.updateByAdmin = async(req,res)=>{
     try{
+        const role = parseInt(req.body.role)
+        console.log(role)
+        console.log(typeof role)
         let {id} = req.profileToUpdate
-        console.log(req.body)
-        const user = await User.findByIdAndUpdate({_id:id},{$set:req.body},{new:true})
+        const user = await User.findByIdAndUpdate(
+            {_id:id},
+            { $set: { name: req.body.name , role: role } },
+            {new:true}
+        )
         if(!user){
             return res.status(400).json({
                 error : "cannot find or update user"
