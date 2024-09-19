@@ -79,7 +79,9 @@ catch(err){
 }
             
 };
-
+exports.hello = (req,res)=>{
+    res.send('hello from server')
+}
 exports.signOut= (req,res)=>{
 try{
     res.clearCookie('t')
