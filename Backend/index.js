@@ -40,6 +40,10 @@ app.use('/api',productRoutes);
 app.use('/api',braintreeRoutes);
 app.use('/api',orderRoutes);
 
+app.get("/",(req,res)=>{
+    res.send("hi welcome to the ecommerece glz store")
+})
+
 
 
 const port = process.env.PORT  || 8000;
