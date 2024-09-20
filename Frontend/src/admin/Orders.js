@@ -103,7 +103,7 @@ const Orders = () => {
                         <div className='w100 border-2 border-black text-2xl font-black '>{showStatus(o)}</div>
                         <p className='w100 border-2 border-black text-2xl font-black '>Transaction Id : {o.transactionId || o.transaction_id}</p>
                         <p className='w100 border-2 border-black text-2xl font-black '>Amount : {o.amount}</p>
-                        <p className='w100 border-2 border-black text-2xl font-black '>Ordered By : {o.user.name}</p>
+                        <p className='w100 border-2 border-black text-2xl font-black '>Ordered By : {o.user? o.user.name : "user not available"}</p>
                         <p className='w100 border-2 border-black text-2xl font-black '>Ordered On : {moment(o.createdAt).fromNow()}</p>
                         <p className='w100 border-2 border-black text-2xl font-black '>Delivery Address : {o.address}</p>
                     </div>
