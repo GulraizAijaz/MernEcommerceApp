@@ -113,7 +113,7 @@ const Orders = () => {
         </div>
         </div>
         }
-        {console.log(orders)}
+        
         
     </Layout>
   )

@@ -73,11 +73,11 @@ const AdminDashboard = () => {
   }
   return (
     <Layout title='DashBoard' description={`Good Day : ${name}`} className='w100'>
-        <div className='w100 flex justify-evenly bg-rose-300 text-white'>
-          <div className='w20 bg-neutral-700'>
+        <div className='w100 flex justify-evenly flex-wrap bg-rose-300 text-white'>
+          <div className='w20 bg-neutral-700 mobile-product-card text-center'>
             {AdminLinks()}
           </div>
-          <div className='w70 bg-neutral-700'>
+          <div className='w70 bg-neutral-700 mobile-product-card text-center'>
           {AdminInfo()}
           </div>
         </div>
