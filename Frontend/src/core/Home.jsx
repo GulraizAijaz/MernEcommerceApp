@@ -46,7 +46,7 @@ const Home = () => {
     <>
     <Layout title="Home Page" description="Homepage Ecommerce website "className='bg-gray-200'>
       <Search/>
-      <p className='text-3xl text-center bg-blue-300 products-wrap'>Products by Arrival {`(latest)`}</p>
+      <p className='text-3xl text-center bg-blue-300 products-wrap'>Products by Arrival {`(latest test)`}</p>
       <div className='flex justify-evenly flex-wrap '>
       {productsByArrival && productsByArrival.length > 0 ? productsByArrival.map((product,i)=>(
         <Card product={product} key={i}/>
