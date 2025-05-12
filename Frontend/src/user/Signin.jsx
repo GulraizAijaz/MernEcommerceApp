@@ -86,34 +86,36 @@ const Signin = () => {
  
   const showLoading = ()=>{
     return (
-      <div>
-        {loading ?
-      <div className='flex justify-center font-black min-h-full bg-red-700 min-w-full items-center '>
-       <h1 className='text-8xl'>loading... please wait</h1>
+    <>  
+      {loading ?
+      <div className='flex justify-center font-black min-h-full bg-red-700 min-w-full items-center custom_loading'>
+       <h1 className='text-4xl loading_title'>loading... please wait</h1>
       </div>
       : 
-     null
-        }
-      </div>
+      null
+      }
+    </>
+      
     );
   }
   
   // form component
   const signInForm = ()=>{
     return(
-      <div  className="flex justify-center items-center w100 height-85vh signupformparent ">
-        <form className='signupform w70' >
-          <div>
+
+      <div  className="flex justify-center items-center w100 ">
+        <form className='signupform' >
+          <div className='email_wrap input_field'>
           <p>
             E-mail
           </p>
           <input 
           required
-           onChange={handleChange('email')}
+          onChange={handleChange('email')}
           type="text"
           value={email} />
           </div>
-          <div className='signuppass'>
+          <div className='signuppass input_field'>
           <p>
             Password
           </p>
@@ -122,15 +124,17 @@ const Signin = () => {
             type={showPassword.password ? 'text' : 'password'}
             value={password} />
             <button
-              className='txt-s'
+              className='custom_btn inline_btn'
               type="button"
               onClick={() => togglePasswordVisibility('password')}
             >
+              <span>
               {showPassword.password ? 'Hide' : 'Show'}
+              </span>
             </button>
           </div>
           <div className='button'>
-          <button onClick={handleSubmit}>Sign in</button>
+          <button className='custom_btn' onClick={handleSubmit}><span>Sign in</span></button>
           </div>
         </form>
     </div>
@@ -153,10 +157,12 @@ const Signin = () => {
   }, [error, msg]);
  
   return (
-    <Layout  title="Log In " description="Log In to Ecommerce website "className=''>
+    <>
       {showLoading()}
+    <Layout  title="Log In " description="Log In to Ecommerce website " className='signin_form'>
        {signInForm()}
     </Layout>
+    </>
   )
 }
 

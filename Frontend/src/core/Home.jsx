@@ -2,9 +2,8 @@ import { isAuthenticated } from '../auth'
 import { useState,useEffect } from 'react'
 import Layout from "./Layout"
 import { getProducts } from './apiCore'
-import Card from './Card'
 import Search from './Search'
-
+import ProductGrid from './produc-grid'
 
 const Home = () => {
   const[productsBySell,setProductsBySell] = useState([])
@@ -44,21 +43,13 @@ const Home = () => {
   },[])
   return (
     <>
-    <Layout title="Home Page" description="Homepage Ecommerce website "className='bg-gray-200'>
+    <Layout title="Home Page" description="Homepage Ecommerce website "className='home_main'>
       <Search/>
-      <p className='text-3xl text-center bg-blue-300 products-wrap'>Products by Arrival {`(latest test)`}</p>
-      <div className='flex justify-evenly flex-wrap '>
-      {productsByArrival && productsByArrival.length > 0 ? productsByArrival.map((product,i)=>(
-        <Card product={product} key={i}/>
-      )):null}
-      </div>
-      
-      <p className='text-3xl text-center bg-blue-300'>Products by Sell {`(most sold)`}</p>
-      <div className='flex justify-evenly flex-wrap products-wrap'>
-      {productsBySell && productsBySell.length > 0 ? productsBySell.map((product,i)=>(
-        <Card product={product} key={i}/>
-      )): null}
-      </div>
+      <p className='text-3xl text-center product_sort_type mb-4'>Recent Added Items</p>
+      <ProductGrid products={productsByArrival} />
+  
+      <p className='text-3xl text-center product_sort_type mb-4'>Most Sold Items</p>
+      <ProductGrid products={productsBySell} /> 
       </Layout>
     </>
   )

@@ -72,13 +72,15 @@ const Search = ()=>{
 
     const searchForm = ()=>(
         
-            <form onSubmit={handleSubmit} className='w100 bg-green-400 flex justify-center items-center py-2 flex-wrap '>
-            <div className='w100 flex justify-center p-2 '>
-                <h2 className='text-2xl bg-blue-500 rounded-full  font-black px-2'>
+            <form onSubmit={handleSubmit} className='w100 py-6  flex justify-center items-center flex-wrap search_form box_style mb-4'>
+            <div className='w100 flex justify-center pb-6 search_title'>
+                <h2 className='text-2xl  rounded-full  font-bold '>
                     search products here
                 </h2>
             </div>
-                <select className='w20 py-2' onChange={handlechange("category")}>
+            <div className='search_dets_wrap flex justify-center '>
+
+                <select className='w20 py-2 pr-2 custom_border pl-3' onChange={handlechange("category")}>
                     <option value='All'>All Categories</option>
                     {
                         categories && categories.length > 0 && categories.map((c,i)=>(
@@ -88,12 +90,13 @@ const Search = ()=>{
                 </select>
                 <input 
                 type='text'
-                className='w40 py-2 rounded mx-2'
+                className='w40 py-2 rounded pl-3 custom_border'
                 placeholder='search products'
                 value={search}
                 onChange={handlechange("search")}
                 />
-                <button  className='bg-blue-500 py-1 text-2xl rounded'>search</button>
+                <button  className='p-2 text-2xl rounded custom_border'>search</button>
+            </div>
         </form>
         
     )

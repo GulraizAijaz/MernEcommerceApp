@@ -75,9 +75,9 @@ const Signup = () => {
   // form component
   const signUpForm = ()=>{
     return(
-      <div  className="flex justify-center items-center w100 height-85vh signupformparent ">
+      <div  className="flex justify-center items-center w100 signupformparent ">
         <form className='signupform w70' >
-          <div>
+          <div className='input_field'>
           <p>
             Name
           </p>
@@ -86,7 +86,7 @@ const Signup = () => {
             type="text"
             value={name} />
           </div>
-          <div>
+          <div className='input_field'>
           <p>
             E-mail
           </p>
@@ -95,7 +95,7 @@ const Signup = () => {
           type="text"
           value={email} />
           </div>
-          <div className='signuppass'>
+          <div className='signuppass input_field'>
           <p>
             Password
           </p>
@@ -104,13 +104,14 @@ const Signup = () => {
             type={showPassword.password ? 'text' : 'password'}
             value={password} />
             <button
-              className='txt-s'
+              className='txt-s custom_btn inline_btn'
               type="button"
               onClick={() => togglePasswordVisibility('password')}
             >
-              {showPassword.password ? 'Hide' : 'Show'}
+              <span>{showPassword.password ? 'Hide' : 'Show'}</span>
             </button>
-          <div className='signuppass'>
+          </div>
+          <div className='signuppass input_field'>
           <p>
             confirm Password
           </p>
@@ -118,15 +119,14 @@ const Signup = () => {
            onChange={handleChange('confirmpassword')}
            type={showPassword.confirmPassword ? 'text' : 'password'} />
             <button 
-              className='txt-s'
+              className='txt-s custom_btn inline_btn'
               type="button"
               onClick={() => togglePasswordVisibility('confirmPassword')}
             >
-              {showPassword.confirmPassword ? 'Hide' : 'Show'}
+              <span>{showPassword.confirmPassword ? 'Hide' : 'Show'}</span>
             </button>
           </div>
-          </div>
-          <div>
+          <div className='input_field'>
           <p>
             Phone no {  `(optional)`}
           </p>
@@ -138,8 +138,8 @@ const Signup = () => {
           </p>
           <input onChange={handleChange('dob')} type="date" />
           </div>
-          <div className='button'>
-          <button onClick={handleSubmit}>Sign Up</button>
+          <div className='button input_field'>
+          <button className='custom_btn' onClick={handleSubmit}><span>Sign Up</span></button>
           </div>
         </form>
     </div>

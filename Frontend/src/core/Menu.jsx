@@ -1,4 +1,4 @@
-import React, { useState,useRef } from 'react';
+import React, { useState,useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { signout,isAuthenticated } from '../auth/index';
 import Swal from 'sweetalert2';
@@ -15,7 +15,17 @@ import { useContext } from "react"
 
 
 const Menu = () => {
-  const {user,token} = isAuthenticated()
+  const [isSticky, setIsSticky] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > 50); 
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  // const {user,token} = isAuthenticated()
   const navigate = useNavigate();
   const location = useLocation();
   const [loading,setLoading] = useState(false)
@@ -25,34 +35,29 @@ const Menu = () => {
   const logoRef = useRef(null)
 
   const showSidebar = () => {
-    sidebarRef.current.style.display = 'block';
-    sidebarRef.current.style.minWidth = '100%';
-    menuIconRef.current.style.display = 'none';
-    sidebarRef.current.style.backgroundColor="#363636";
-    sidebarRef.current.style.color="#fff";
-    logoRef.current.style.display = "none"
+    sidebarRef.current.classList.add('show')
+    menuIconRef.current.style.display = "none"
+    document.body.classList.add('no-scroll')
   }
-
+  
   const hideSidebar = () => {
-    sidebarRef.current.style.display = 'none';
-    menuIconRef.current.style.display = 'block';
-    logoRef.current.style.display = "block"
+    sidebarRef.current.classList.remove('show')      
+    menuIconRef.current.style.display = ""
+    document.body.classList.remove('no-scroll')
   };
    
 
-  const activeStyles = {
-    backgroundColor: '#ff8100c9',
-    borderRadius: '20px',
-    color:'white',
+  // const activeStyles = {
+  //   borderBottom:'2px solid #ffffff',
     
-  }
+  // }
   const isActive = (path) => {
-    return location.pathname === path ? activeStyles : { backgroundColor: 'transparent' };
+    return location.pathname === path ? 'active-link' : '';
   };
 
   const userDashboardRoute = ()=>{
     return(
-      <li style={isActive('/user/dashboard')} className='nav-links'>
+      <li className={`nav-links relative ${isActive('/user/dashboard')}`}>
             <Link to='/user/dashboard'>
               <div className='p-1'><DashboardIcon fontSize='large' /></div>
             </Link>
@@ -61,9 +66,9 @@ const Menu = () => {
   }
   const adminDashboardRoute = ()=>{
     return(
-      <li style={isActive('/admin/dashboard')} className='nav-links'>
+      <li className={`nav-links relative ${isActive('/admin/dashboard')}`}>
             <Link to='/admin/dashboard'>
-              <div className='p-1'><DashboardIcon fontSize='large' color='error'/></div>
+              <div className='p-1'><DashboardIcon fontSize='large' /></div>
             </Link>
       </li>
     )
@@ -88,41 +93,42 @@ const Menu = () => {
  
   const showLoading = ()=>{
     return (
-      <div>
-        {loading ? 
-       
-        <div className='absolute flex justify-center font-black min-h-full bg-red-700 min-w-full items-center'>
-        <h1 className='text-8xl'>loading... please wait</h1>
+      <>
+        {
+          loading ?
+        <div className='absolute flex justify-center items-center custom_loading w-full'>
+          <span className='loader'></span>
         </div>
-      : 
-     null
+        :
+        ""
         }
-      </div>
+      </>
     );
   }
 
   return (
-    <nav className='flex jusitfy-end items-center text-xl px-6 py-4 bg-blue-500 menu-header w100'>
+    <header className={`flex jusitfy-end items-center  menu-header w-full relative ${isSticky ? 'sticky_header' : ''}`}>
+      <div className='header_inner  flex jusitfy-end items-center text-xl px-6 py-4  w-full'>
       {showLoading()}
-      <div ref={logoRef} className='w30 '>
+      <div ref={logoRef} className='w30 logo_wrap'>
         <Link to='/'>
           <span className='text-slate-950 font-black'>GLZ's <span className='font-normal text-orange-400'>Store</span></span>
         </Link> 
       </div>
-      <div className='w70 hideOnMobile'>
-        <ul className='flex justify-end w100 gap-3.5'>
-          <li style={isActive('/')} className='nav-links'>
+      <div className='w70 hideOnMobile '>
+        <ul className='flex justify-end w100 gap-3.5 items-center'>
+          <li className={`nav-links relative ${isActive('/')}`}>
             <Link to='/'>
               <div className='p-1'><HomeIcon fontSize='large'/></div>
             </Link>
           </li>
-          <li style={isActive('/cart')} className=' nav-links cart-container'>
+          <li className={`nav-links cart-container relative ${isActive('/cart')}`}>
                 <Link to='/cart'>
-                <ShoppingCartIcon color='success'fontSize='large'/>
+                <ShoppingCartIcon fontSize='large' style={{color:'#000000'}}/>
                 <span className="cart-badge p-1 text-xs">{cartItemsLength}</span>
                 </Link>
           </li>
-          <li style={isActive('/shop')} className='nav-links'>
+          <li className={`nav-links relative ${isActive('/shop')}`}>
             <Link to='/shop'>
               <div className='p-1'><AddShoppingCartIcon fontSize='large'/></div>
             </Link>
@@ -131,14 +137,14 @@ const Menu = () => {
           {isAuthenticated() && isAuthenticated().user.role === 1 ? (adminDashboardRoute()) : null  }
           {!isAuthenticated() && (
             <>
-              <li style={isActive('/signin')} className='nav-links'>
+              <li className={`nav-links relative ${isActive('/signin')}`}>
                 <Link to='/signin'>
-                  <div className='p-1'>Login</div>
+                  <div >Login</div>
                 </Link>
               </li>
-              <li style={isActive('/signup')} className='nav-links'>
+              <li className={`nav-links relative ${isActive('/signup')}`}>
                 <Link to='/signup'>
-                  <div className='p-1'>Sign Up</div>
+                  <div>Sign Up</div>
                 </Link>
               </li>
               </>
@@ -146,9 +152,9 @@ const Menu = () => {
           {isAuthenticated()&&(
             (
               
-              <li className='nav-links' style={{ cursor: 'pointer', color: '#ffffff' }}>
+              <li className='nav-links relative' style={{ cursor: 'pointer', color: '#ffffff' }}>
                 <span onClick={handleSignOut}>
-                  <div className='p-1'><LogoutIcon fontSize='large'/></div>
+                  <div className='p-1'><LogoutIcon fontSize='large' style={{color:'#000000'}}/></div>
                 </span>
               </li>
               
@@ -157,7 +163,9 @@ const Menu = () => {
         </ul>
       </div>
       {/* ------mobile side bar ----- */}
-      <div className='showMobile w100  flex justify-end'>
+
+
+      <div className='mobile_sidebar'>
         {/* menu icon */}
         <div className='menu-icon '
               ref={menuIconRef}>
@@ -165,36 +173,36 @@ const Menu = () => {
                   className='text-slate-950 font-black'
                   onClick={showSidebar}
                   >
-              <MenuIcon className='safe' fontSize='large' />
+              <MenuIcon  fontSize='large' />
             </span>
         </div>
         
-          <div ref={sidebarRef} className='w100 h100 mobile-links fix-pos'>
+          <div ref={sidebarRef} className='w100 h100 mobile-links '>
             {/* close icon */}
-                  <div className='w100 bg-green-400 flex justify-center '>
+                  <div className='w100  flex justify-end close_icon'>
                         <span 
                         className='text-slate-950 font-black'
                         onClick={hideSidebar}
                         >
-                            <CloseIcon className='danger' fontSize='large' />
+                            <CloseIcon  fontSize='large' />
                         </span>
                   </div>
-                <ul className='flex flex-col items-center justify-center  h100'>
-                  <li className='bg-yellow-400 w100 text-center'>Navigation Links</li>
-                  <li style={isActive('/')} className='nav-links'>
+                  <div className='bg-yellow-400 w100 text-center'>Navigation Links</div>
+                <ul className='flex flex-col items-center justify-center navs_mobile'>
+                  <li onClick={hideSidebar} className={`nav-links relative ${isActive('/')}`}>
                     <Link to='/'>
                       <div className='p-1'><HomeIcon fontSize='large'/></div>
                     </Link>
                   </li>
-                  <li style={isActive('/cart')} className='nav-links cart-container'>
+                  <li onClick={hideSidebar} className={`nav-links cart-container relative ${isActive('/cart')}`}>
                         <Link to='/cart'>
                         <span className="cart-text p-1">
-                        <ShoppingCartIcon color='success'fontSize='large'/>
+                        <ShoppingCartIcon fontSize='large'/>
                         </span>
                         <span className="cart-badge p-1 text-xs">{cartItemsLength}</span>
                         </Link>
-                      </li>
-                  <li style={isActive('/shop')} className='nav-links'>
+                  </li>
+                  <li onClick={hideSidebar} className={`nav-links relative ${isActive('/shop')}`}>
                     <Link to='/shop'>
                       <div className='p-1'><AddShoppingCartIcon fontSize='large'/></div>
                     </Link>
@@ -203,12 +211,12 @@ const Menu = () => {
                   {isAuthenticated() && isAuthenticated().user.role === 1 ? (adminDashboardRoute()) : null  }
                   {!isAuthenticated() && (
                     <>
-                      <li style={isActive('/signin')} className='nav-links'>
+                      <li onClick={hideSidebar} className={`nav-links relative ${isActive('/signin')}`}>
                         <Link to='/signin'>
                           <div className='p-1'>Login</div>
                         </Link>
                       </li>
-                      <li style={isActive('/signup')} className='nav-links'>
+                      <li onClick={hideSidebar} className={`nav-links relative ${isActive('/signup')}`}>
                         <Link to='/signup'>
                           <div className='p-1'>Sign Up</div>
                         </Link>
@@ -218,19 +226,19 @@ const Menu = () => {
                   {isAuthenticated()&&(
                     (
                       
-                      <li className='nav-links' style={{ cursor: 'pointer', color: '#ffffff' }}>
+                      <li  className='nav-links' style={{ cursor: 'pointer', color: '#ffffff' }}>
                         <span onClick={handleSignOut}>
-                          <div className='p-1'><LogoutIcon fontSize='large'/></div>
+                          <div className='p-1'><LogoutIcon style={{color:'#000000'}} fontSize='large'/></div>
                         </span>
                       </li>
                       
                     )
                   )}
                 </ul>
-          </div>
+          </div> 
       </div>
-      
-    </nav>
+      </div>
+    </header>
   );
 };
 

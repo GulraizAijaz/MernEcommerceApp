@@ -23,7 +23,6 @@ const Card = ({ product,
   const [count,setCount] = useState(product.count)
   const {updateCartItemsLength} = useContext(CartContext)
   const {user} = isAuthenticated()
-  console.log(user)
 
   useEffect(() => {
     if (redirect) {
@@ -37,7 +36,7 @@ const Card = ({ product,
   const showAvailable = ()=>{
     return(
     <>
-    <span className='breaktext text-white safe rounded-md  '>In Stock</span>
+    <span className='breaktext  safe rounded-md  '>In Stock</span>
     </>
     )
     
@@ -46,7 +45,7 @@ const Card = ({ product,
   const showUnavailable = ()=>{    
     return(
         <>
-        <span className='breaktext text-white danger rounded-md  '>out of stock</span>
+        <span className='breaktext  danger rounded-md  '>out of stock</span>
         </>
         )
 }
@@ -102,7 +101,7 @@ const Card = ({ product,
   const showCartUpdateOptions =(cartUpdate)=>{
     return cartUpdate && 
     (
-    <div className='bg-pink-500 flex-col items-center justify-center'>
+    <div className=' flex-col items-center justify-center'>
       <span>Adjust Quantity</span>
       {/* <span>{count}</span> */}
       <input
@@ -120,7 +119,7 @@ const Card = ({ product,
     (
       <button
       onClick={()=>{handleDelete(product._id)}}
-      className='bg-red-500 p-2 rounded-full text-white'>
+      className='bg-red-500   product_card_btn'>
       Remove Product
     </button>
     )
@@ -128,78 +127,84 @@ const Card = ({ product,
 
 
   return (
-    <div className={`${productwidth} bg-gray-400 p-2 my-2 product-card rounded-3xl text-center `}>
+    <div className={`${productwidth}  flex flex-col justify-between items-center product-card rounded-3xl text-center`}>
       <ShowImage
         item={product}
         url='product'
       />
-      <div className=''>
-        <div className='w100 text-3xl bg-blue-500 p-1 rounded border-2 border-black text-white'>
+      <div className='product_details '>
+        <div className='w100  rounded   product_title'>
           {!details && product.name.length > 15 ? product.name.slice(0, 20) + "..." : product.name}
         </div>
         {
             !showviewproductbutton && 
             (
-            <div className='flex flex-wrap text-black'>
-            <h2 className='bg-blue-500 font-black border-2 border-black m-1 text-black'>
-                Sold :  <span className='text-white'>{product.sold}</span>
+            <div className='flex flex-wrap '>
+            <h2 className='m-1 '>
+                Sold :  <span className=''>{product.sold}</span>
             </h2>
-            <h2 className='bg-blue-500 font-black border-2 border-black m-1 text-black '>
-                shipping:  <span className='text-white'>{product.shipping = false ? 'no':'yes'}</span>
+            <h2 className='m-1  '>
+                shipping:  <span className=''>{product.shipping = false ? 'no':'yes'}</span>
             </h2>
-            <h2 className='bg-blue-500 font-black border-2 border-black m-1 text-black '>
-                Added on :  <span className='text-white'>{moment(product.createdAt).fromNow()}</span>
+            <h2 className='m-1  '>
+                Added on :  <span className=''>{moment(product.createdAt).fromNow()}</span>
             </h2>
             </div>
             )
         }
-        <div className='card-body w100 border-2 border-black bg-blue-500 p-1 rounded text-white'>
-          <p className='text-xl'>
+        <div className='card-body w100  rounded product_desc'>
+          <p>
             {!details && product.description.length > 15 ? product.description.slice(0, 25) + "..." : 
             (
             <>
-                <span className='text-black text-2xl font-black'>description: </span>{product.description}
+                <span >description: </span>{product.description}
               </>
             )
             }
           </p>
         </div>  
-          <div className='w100 flex justify-between '>
-            <p className='bg-blue-500 text-red-900 font-black border-2 border-black m-1 text-white '>
+          <div className='w100 flex justify-between flex-wrap product_more_dets'>
+            <p className='price'>
               Price: pkr {product.price}
             </p>
-            <p className='text-red-900 bg-blue-500 font-black border-2 border-black m-1 text-white'>
+            <p className='sold'>
               Sold: {product.sold}
             </p>
-            <p className='bg-blue-500 font-black border-2 border-black m-1 '>
-                Category :  <span className='text-white'>{product.category ? product.category.name : "Uncategorized"}</span>
+            <p className='category'>
+                Category :  <span className=''>{(product.category && product.category.name.length > 15) ? product.category.name.slice(0, 13) + "..." : product.category ? product.category.name : "Uncategorized"}</span>
             </p>
-            <p className='bg-blue-500 font-black border-2 border-black m-1 text-black '>
-                            <span className='text-white'>{product.quantity > 0 ? (showAvailable()):(showUnavailable())}</span>
+            <p className=' status'>
+                            <span className=''>{product.quantity > 0 ? (showAvailable()):(showUnavailable())}</span>
             </p>
           </div>
-          <div className='flex justify-between w100'>
+          <div className='flex justify-between w100 flex-wrap'>
             {showviewproductbutton ? (
               <Link to={`/product/${product._id}`}>
-                <button className='bg-pink-500 p-2 rounded-full text-white'>
+                <button className='   product_card_btn'>
+                  <span>
                   View Product
+                  </span>
                 </button>
               </Link>
             ) : (
                
                 <button
                     onClick={() => navigate(-1)} // Use navigate(-1) to go back to the previous location
-                    className='bg-pink-500 p-2 rounded-full text-white'
+                    className='   product_card_btn'
                     >
+                      <span>
                         Go Back
+                      </span>
                 </button>
             )}
 
             { showAddToCard && product.quantity > 0 ?
             (<button
             onClick={()=>{addToCart(product)}}
-             className='bg-pink-500 p-2 rounded-full text-white'>
+             className='   product_card_btn'>
+              <span>
               Add To Cart
+              </span>
             </button>) 
             :
             (
