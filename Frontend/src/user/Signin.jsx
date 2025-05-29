@@ -6,7 +6,7 @@ import Layout from '../core/Layout'
 import {signin,authenticate,isAuthenticated} from "../auth/index"
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
-
+import Loading from '../core/loading'
 const Signin = () => {
   const {user} = isAuthenticated()
   const navigate = useNavigate()
@@ -88,9 +88,8 @@ const Signin = () => {
     return (
     <>  
       {loading ?
-      <div className='flex justify-center font-black min-h-full bg-red-700 min-w-full items-center custom_loading'>
-       <h1 className='text-4xl loading_title'>loading... please wait</h1>
-      </div>
+      
+      <Loading/>
       : 
       null
       }

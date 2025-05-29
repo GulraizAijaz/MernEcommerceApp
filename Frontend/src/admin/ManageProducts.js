@@ -11,8 +11,8 @@ const ManageProducts = ()=>{
     const {user,token} = isAuthenticated()
     const [products,setProducts] = useState([])
 
-    const loadProducts = ()=>{
-        getProducts().then(data=>{
+    const loadProducts = (limit)=>{
+        getProducts(limit).then(data=>{
             if(data.error){
                 console.log(data.error)
             }
@@ -42,7 +42,7 @@ const ManageProducts = ()=>{
           });
     }
     useEffect(()=>{
-        loadProducts()
+        loadProducts(100)
     },[])
     return (
         <Layout title="Manage Products" description="Perform Crud Operations"className='bg-gray-200'>

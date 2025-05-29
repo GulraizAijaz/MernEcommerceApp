@@ -167,11 +167,11 @@ const Card = ({ product,
             <p className='price'>
               Price: pkr {product.price}
             </p>
-            <p className='sold'>
-              Sold: {product.sold}
-            </p>
+            <p className='sold'> 
+              Sold: {product.sold}      
+            </p>  
             <p className='category'>
-                Category :  <span className=''>{(product.category && product.category.name.length > 15) ? product.category.name.slice(0, 13) + "..." : product.category ? product.category.name : "Uncategorized"}</span>
+                Category :  <span className=''>{(product.category  && product.category.name?.length > 15) ? product.category.name.slice(0, 13) + "..." : product.category ? product.category.name : "Uncategorized"}</span>
             </p>
             <p className=' status'>
                             <span className=''>{product.quantity > 0 ? (showAvailable()):(showUnavailable())}</span>

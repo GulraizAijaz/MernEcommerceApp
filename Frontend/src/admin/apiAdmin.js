@@ -174,8 +174,8 @@ export const updateOrderStatus = (userId,token,orderId,status)=>{
 // update signle product
 // delete single product
 
-export const getProducts = ()=>{
-  return fetch(`${API}/products?limit=20`,{
+export const getProducts = (limit=20)=>{
+  return fetch(`${API}/products?limit=${limit}`,{ 
     method:"GET",
   })
   .then(response=> {

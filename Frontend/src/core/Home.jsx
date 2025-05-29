@@ -44,7 +44,6 @@ const Home = () => {
   return (
     <>
     <Layout title="Home Page" description="Homepage Ecommerce website "className='home_main'>
-      <Search/>
       <p className='text-3xl text-center product_sort_type mb-4'>Recent Added Items</p>
       <ProductGrid products={productsByArrival} />
   

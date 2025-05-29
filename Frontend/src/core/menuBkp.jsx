@@ -18,7 +18,7 @@ import { menuData } from './menus';
 
 const Menu = () => {
   const [isSticky, setIsSticky] = useState(false);
-  
+
   useEffect(() => {
     const handleScroll = () => {
       setIsSticky(window.scrollY > 50); 
@@ -32,34 +32,27 @@ const Menu = () => {
   const location = useLocation();
   const [loading,setLoading] = useState(false)
   const {cartItemsLength} = useContext(CartContext)
-
   const sidebarRef = useRef(null);
   const menuIconRef = useRef(null);
   const logoRef = useRef(null)
-
 
   const showSidebar = () => {
     sidebarRef.current.classList.add('show')
     menuIconRef.current.style.display = "none"
     document.body.classList.add('no-scroll')
   }
-   
+  
   const hideSidebar = () => {
     sidebarRef.current.classList.remove('show')      
     menuIconRef.current.style.display = ""
     document.body.classList.remove('no-scroll')
   };
-    const handleMouseEnter = () => {
-    // let dynamicHeight = searchDropDownRef.current.scrollHeight + 100
-    // searchDropDownRef.current.style.minHeight =  "0px";
-    // searchDropDownRef.current.style.minHeight = dynamicHeight + "px";
-  };
+   
 
-  const handleMouseLeave = () => {
-    // searchDropDownRef.current.style.minHeight = '0px';
-  };
-
-
+  // const activeStyles = {
+  //   borderBottom:'2px solid #ffffff',
+    
+  // }
   const isActive = (path) => {
     return location.pathname === path ? 'active-link' : '';
   };
@@ -119,14 +112,11 @@ const Menu = () => {
     <header className={`flex jusitfy-end items-center  menu-header w-full relative ${isSticky ? 'sticky_header' : ''}`}>
       <div className='header_inner  flex jusitfy-end items-center text-xl px-6 py-4  w-full'>
       {showLoading()}
-
-      {/* logo */}
       <div ref={logoRef} className='w30 logo_wrap'>
         <Link className={`hover_links relative`} to='/'>
           <span className='text-slate-950 font-black'>GLZ's <span className='font-normal text-orange-400'>Store</span></span>
         </Link> 
       </div>
-      
       <div className='w70 hideOnMobile '>
         <ul className='flex justify-end w100 gap-3.5 items-center navs_desktop'>
           <li className={`nav-links  `}>
@@ -135,16 +125,14 @@ const Menu = () => {
             </Link>
           </li>
           <li className={`nav-links SearchIcon `}>
-            
+            <p>
               <div className='p-1'><SearchIcon fontSize='large'/></div>
-            
-            <SearchDropdown />
+            </p>
+            <SearchDropdown/>
           </li>
           <li className={`nav-links cart-container  `}>
                 <Link className={`hover_links relative ${isActive('/cart')}`} to='/cart'>
-                <div className='p-1'>
                 <ShoppingCartIcon fontSize='large' style={{color:'#000000'}}/>
-                </div>
                 <span className="cart-badge p-1 text-xs">{cartItemsLength}</span>
                 </Link>
           </li>
@@ -195,12 +183,6 @@ const Menu = () => {
                   >
               <MenuIcon  fontSize='large' />
             </span>
-            <div className={`nav-links SearchIcon `}>
-            
-              <div className='p-1 '><SearchIcon fontSize='large'/></div>
-            
-            <SearchDropdown />
-          </div>
         </div>
         
           <div ref={sidebarRef} className='w100 h100 mobile-links '>

@@ -1,4 +1,4 @@
-import React, { createContext,useState,useEffect} from 'react';
+import  { createContext,useState,useEffect} from 'react';
 import { itemTotal } from '../core/cartHelpers';
 
 const CartContext = createContext();
@@ -10,6 +10,7 @@ const CartProvider = ({ children }) => {
         const initialCartLength = itemTotal();
         setCartItemsLength(initialCartLength);
     }, []);
+    
     const updateCartItemsLength = () => {
     const updatedCartLength = itemTotal();
     setCartItemsLength(updatedCartLength);

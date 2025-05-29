@@ -140,7 +140,7 @@ exports.list = async(req,res)=>{
   try{
       let order = req.query.order ? req.query.order : "asc"
       let sortBy = req.query.sortBy ? req.query.sortBy : "_id"
-      let limit = req.query.limit ? parseInt(req.query.limit) : 20
+      let limit = req.query.limit ? parseInt(req.query.limit) : 50
       
       let products = await Product.find()
       .select("-photo")
@@ -205,7 +205,7 @@ exports.listBySearch = async (req, res) => {
   try{
     let order = req.body.order ? req.body.order : "desc";
   let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
-  let limit = req.body.limit ? parseInt(req.body.limit) : 20;
+  let limit = req.body.limit ? parseInt(req.body.limit) : 100;
   let skip = parseInt(req.body.skip);
   let findArgs = {};
 

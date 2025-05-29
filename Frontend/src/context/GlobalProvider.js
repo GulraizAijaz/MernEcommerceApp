@@ -1,12 +1,14 @@
-import React from 'react';
 import { CartProvider } from './CartContext';
 import { UserProvider } from './UserContext';
+import { SearchProvider } from './SearchContext';
 
 const GlobalProvider = ({ children }) => {
   return (
     <UserProvider>
       <CartProvider>
-        {children}
+        <SearchProvider>
+          {children}  
+        </SearchProvider>
       </CartProvider>
     </UserProvider>
   );

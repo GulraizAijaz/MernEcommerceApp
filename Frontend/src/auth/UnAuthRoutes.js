@@ -4,15 +4,24 @@ import { useEffect } from "react";
 import Swal from "sweetalert2";
 
 export const UnAuthRoutes = ({ children }) => {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     if (isAuthenticated()) {
-    //              navigate('/signup')              
-    //     }
-    // }, [navigate]);
+   useEffect(() => {
+    if (isAuthenticated()) {
+      Swal.fire({
+        title: 'Return To Home',
+        text: "Already Signed in!",
+        icon: 'warning',
+        confirmButtonText: 'Okay'
+      }).then(res => {
+        if (res.isConfirmed) {
+          navigate('/');
+        }
+      });
+    }
+  }, [isAuthenticated(), navigate]);
 
-    return !isAuthenticated() ? children : '(You are sign In Already)';
+  return !isAuthenticated() ? children : null; 
 };
 
 export default UnAuthRoutes;

@@ -1,6 +1,7 @@
 import { useState,useEffect } from 'react'
 import { getCategories,list } from './apiCore'
-import Card from './Card'
+import ProductGrid from './produc-grid'
+
 
 const Search = ()=>{
     const [data,setData] = useState({
@@ -28,6 +29,8 @@ const Search = ()=>{
     const handlechange = name => e =>{
         setData({...data,[name]:e.target.value,searched:false})
     }
+
+
     const searchData  = ()=>{
         list({search:search || undefined, category:category })
         .then(res=>{
@@ -44,6 +47,7 @@ const Search = ()=>{
         e.preventDefault()
         searchData()
     }
+
     const searchMessage = (searched,results)=>{
         if(searched && results.length > 0){
             return `Found ${results.length} Products`
@@ -52,17 +56,15 @@ const Search = ()=>{
             return `No Products Found`
         }
     }
+
     const searchedProducts = (results=[])=>{
         return(
         <div className='w100'>
             <div className='text-4xl w100 font-black flex justify-center bg-gray-700 text-red-500'>
             {searchMessage(searched,result)}
             </div>
-            <div className='w100 flex justify-evenly flex-wrap bg-pink-300'>
-            {results.map((p,i)=>(
-                <Card product={p} key={i}/>
-            ))}
-            </div>
+
+            <ProductGrid products={result} /> 
         </div>
         )
     }
@@ -109,7 +111,7 @@ const Search = ()=>{
             (
                 <h1 className='w100 text-3xl text-center bg-blue-300 my-2'>Searched Results</h1>
             )&&
-            result?searchedProducts(result) :null
+            result?searchedProducts(result) : null
             }
         </div>
         </>

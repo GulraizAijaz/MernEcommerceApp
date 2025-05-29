@@ -24,8 +24,9 @@ import GetAllUsers from './admin/GetAllUsers';
 import UpdateSingleUser from './admin/UpdateSingleUser';
 import DeleteUser from './admin/DeleteUser';
 import CashOnDelivery from './core/CashOnDelivery';
+import Search from './core/SearchPage';
 
-const Routes = ()=> {
+const Routes = ()=> {   
 
     const router = createBrowserRouter([
       {path:"/signin",
@@ -34,83 +35,112 @@ const Routes = ()=> {
       {path:"/",
       element:<><Home/></>,
       errorElement: <ErrorPage />,
-      
       },
       {
         path:'/signup',
-        element:<UnAuthRoutes><Signup/></UnAuthRoutes>
+        element:<UnAuthRoutes><Signup/></UnAuthRoutes>,
+        errorElement: <ErrorPage />,  
       },
       {
         path : '/user/dashboard',
-        element:<PrivateRoute><UserDashboard/></PrivateRoute>
+        element:<PrivateRoute><UserDashboard/></PrivateRoute>,
+        errorElement: <ErrorPage />,
       },
       {
-        path : '/user/cod/:userId',
-        element:<PrivateRoute><CashOnDelivery/></PrivateRoute>
+        path : '/user/cod/:userId?',
+        element:<PrivateRoute><CashOnDelivery/></PrivateRoute>,
+        errorElement: <ErrorPage />,
       },
       {
         path : '/profile/:userId',
-        element:<Profile/>
+        element:<Profile/>,
+        errorElement: <ErrorPage />,
       },
       {
         path : '/admin/dashboard',
-        element:<AdminRoute><AdminDashboard/></AdminRoute>
+        element:<AdminRoute><AdminDashboard/></AdminRoute>,
+        errorElement: <ErrorPage />,
       },
       {
         path : '/admin/products',
-        element:<AdminRoute><ManageProducts/></AdminRoute>
+        element:<AdminRoute><ManageProducts/></AdminRoute>,
+        errorElement: <ErrorPage />,
       },
       {
         path : '/create/category',
-        element:<AdminRoute><AddCategory/></AdminRoute>
+        element:<AdminRoute><AddCategory/></AdminRoute>,
+        errorElement: <ErrorPage />,
       },
       {
         path : 'admin/category/manage',
-        element:<AdminRoute><GetAllCategories/></AdminRoute>
+        element:<AdminRoute><GetAllCategories/></AdminRoute>,
+        errorElement: <ErrorPage />,
       },
       {
         path : 'admin/category/update/:categoryId',
-        element:<AdminRoute><UpdateCategory/></AdminRoute>
+        element:<AdminRoute><UpdateCategory/></AdminRoute>,
+        errorElement: <ErrorPage />,
       },
       {
         path : 'admin/category/delete/:categoryId',
-        element:<AdminRoute><DeleteCategory/></AdminRoute>
+        element:<AdminRoute><DeleteCategory/></AdminRoute>,
+        errorElement: <ErrorPage />,
       },
       {
         path : '/create/product',
-        element:<AdminRoute><AddProduct/></AdminRoute>
+        element:<AdminRoute><AddProduct/></AdminRoute>,
+        errorElement: <ErrorPage />,
       },
       {
         path : '/admin/product/update/:productId',
-        element:<AdminRoute><UpdateProduct/></AdminRoute>
+        element:<AdminRoute><UpdateProduct/></AdminRoute>,
+        errorElement: <ErrorPage />,
       },
       {
         path : '/admin/users/all',
-        element:<AdminRoute><GetAllUsers/></AdminRoute>
+        element:<AdminRoute><GetAllUsers/></AdminRoute>,
+        errorElement: <ErrorPage />,
       },
       {
         path : '/admin/user/update/:userId',
-        element:<AdminRoute><UpdateSingleUser/></AdminRoute>
+        element:<AdminRoute><UpdateSingleUser/></AdminRoute>,
+        errorElement: <ErrorPage />,
       },
       {
         path : '/admin/user/delete/:userId',
-        element:<AdminRoute><DeleteUser/></AdminRoute>
+        element:<AdminRoute><DeleteUser/></AdminRoute>,
+        errorElement: <ErrorPage />,
       },
       {
         path : '/admin/orders',
-        element:<AdminRoute><Orders/></AdminRoute>
+        element:<AdminRoute><Orders/></AdminRoute>,
+        errorElement: <ErrorPage />,
       },
       {
         path : '/shop',
-        element:<Shop/>
+        element:<Shop/>,
+        errorElement: <ErrorPage />,
       },
       {
         path : '/product/:productId',
-        element:<Product/>
+        element:<Product/>,
+        errorElement: <ErrorPage />,
       },
       {
         path : '/cart',
-        element:<Cart/>
+        element:<Cart/>,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path : '/cart',
+        element:<Cart/>,
+        errorElement: <ErrorPage />,
+      },
+      {
+        // path : '/search/:query?/:categoryId?/:categoryName?',
+        path : '/search/:query?/:categoryId?/:categoryName?',
+        element:<Search/>,
+        errorElement: <ErrorPage />,
       },
 
       

@@ -52,11 +52,17 @@ const Cart = () => {
                     </button>
                 </div>
                 <div className='w100 my-2 flex justify-center py-1 breaktext'>
-                    { user && user.role === 0 ?
+                    { user && user?.role  === 0 ?
                     <Link to={`/user/cod/${user._id}`}
                         className=' text-center bg-green-600 text-white font-black text-2xl w50 rounded-full'>
                         Order With COD
                     </Link>
+                    :
+                    user?.role === 1 ? 
+                    <p
+                        className=' text-center bg-green-600 text-white font-black text-2xl w50 rounded-full'>
+                        Looks like You are Seller
+                    </p>
                     :
                     <Link to={`/signin`}
                         className=' text-center bg-green-600 text-white font-black text-2xl w50 rounded-full'>

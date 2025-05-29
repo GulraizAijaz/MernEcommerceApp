@@ -3,7 +3,6 @@ import { isAuthenticated } from '../auth'
 import { getBraintreeClientToken,
         processpayment,
         createOrder } from './apiCore'
-import { Link } from 'react-router-dom'
 import DropIn from "braintree-web-drop-in-react";
 import { emptyCart,getCart } from './cartHelpers';
 // context
@@ -186,12 +185,12 @@ const Checkout = ({products,updateCartUi}) => {
                     
                 </div>
             ):(
-                <Link to='/signin'>
+                <p >
                     
-                    <div className=' text-white font-bold rounded-xl w100 bg-blue-500 text-black p-2 my-4'>
-                    <button >Sign In with customer account</button>
-                    </div>
-                </Link>
+                    <span className=' text-white font-bold rounded-xl w100 bg-red-500 text-black p-2 my-4'>
+                        UnExpected error
+                    </span>
+                </p>
             )}
             </div>
         )

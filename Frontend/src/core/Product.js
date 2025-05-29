@@ -3,7 +3,7 @@ import Layout from "./Layout"
 import { readSingleProduct,listRelated } from './apiCore'
 import Card from './Card'
 import { useParams } from 'react-router-dom';
-
+import Loading from '../core/loading'
 const Product = (props)=>{
     const [product,setProduct] = useState({})
     const [relatedProducts,setRelatedProducts] = useState([])
@@ -31,9 +31,7 @@ const Product = (props)=>{
     }
     const loadingProduct = ()=>{
         return(
-        <div className='flex justify-center font-black min-h-full bg-red-700 min-w-full items-center '>
-            <h1 className='text-8xl'>loading... please wait</h1>
-        </div>
+        <Loading/>
         )
     }
     const noRelatedProducts = ()=>{
@@ -51,11 +49,11 @@ const Product = (props)=>{
                 <div className='p-2 w100 flex flex-wrap justify-between bg-yellow-400'>
                     <div className='w70 mobile-product-card  flex justify-center items-start '>
                         {product.product ? 
-                        (<Card product={product.product}
+                        <Card product={product.product}
                         productwidth='w80'
                         details={true}
                         showviewproductbutton={false}
-                        />)
+                        />
                         :
                         (loadingProduct())
                         }

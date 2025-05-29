@@ -58,12 +58,10 @@ export const getProducts = (sortBy)=>{
 
   export const list = params=>{
     const query = queryString.stringify(params)
-    console.log("queryy api core see ", query)
     return fetch(`${API}/products/search?${query}`,{
       method:"GET",
     })
     .then(response=> {
-      console.log(response)
       return response.json()
     })
     .catch(error=> {
