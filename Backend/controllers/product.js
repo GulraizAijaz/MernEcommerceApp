@@ -249,39 +249,71 @@ exports.listBySearch = async (req, res) => {
   }
      
 };
-exports.listSearch = async (req,res)=>{
-  try {
-      // creating query object to hold the values of categories and search
-  const query = {}
-  // assigning search value to query.name
-  if(req.query.search){
-    query.name = {$regex : req.query.search, $options : 'i'}
-  }
-  // assigning category value to query.category
-  if(req.query.category){
-    query.category = req.query.category 
-  }
-  //  now finding product based on query obj with 2 properties
-  let products = await Product.find(query)
-      .select("-photo")
+// exports.listSearch = async (req,res)=>{
+//   try {
+//       // creating query object to hold the values of categories and search
+//   const query = {}
+//   // assigning search value to query.name
+//   if(req.query.search){
+//     query.name = {$regex : req.query.search, $options : 'i'}
+//   }
+//   // assigning category value to query.category
+//   if(req.query.category && req.query.category !== "all"){
+//     query.category = req.query.category 
+//   }
+//   console.log("query object before passing to mongoose",query)
+//   //  now finding product based on query obj with 2 properties
+//   let products = await Product.find(query)
+//       .select("-photo")
 
-      if(!products){
-        return res.status(400).json({
-          error: "products not found"
-        })
-      }  
+//       if(!products){
+//         return res.status(400).json({
+//           error: "products not found" 
+//         })
+//       }  
 
-      // res.send(products)
-      res.json({
-        size: products.length,
-        products:products
-    });
-  } 
-  catch (error) {
-    console.log(error)
-  }
+//       // res.send(products)
+//       res.json({
+//         size: products.length, 
+//         products:products
+//     });
+//   } 
+//   catch (error) {
+//     console.log(error)
+//   }
       
-}
+// }
+exports.listSearch = async (req, res) => {
+  try {
+    const query = {};
+
+    if (req.query.search) {
+      query.name = { $regex: req.query.search, $options: 'i' };
+    }
+
+    if (req.query.category && req.query.category !== "all") {
+      query.category = req.query.category;
+    }
+
+    console.log("Query object:", query);
+
+    const products = await Product.find(query).select("-photo");
+
+    // Optional: handle if no products are found
+    if (products.length === 0) {
+      return res.status(404).json({ error: "No products found" });
+    }
+
+    return res.json({
+      size: products.length,
+      products
+    });
+  } catch (error) {
+    console.error("Error during listSearch:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 
 exports.photo = (req,res,next)=>{
   try{

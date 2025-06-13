@@ -46,20 +46,21 @@ const Product = (props)=>{
     },[productId])
     return(
         <Layout title={`product (${product.product ? product.product.name : "name"})`} description="Product Full Details"className='bg-gray-200'>
-                <div className='p-2 w100 flex flex-wrap justify-between bg-yellow-400'>
+                <div className='p-2 w100 flex flex-wrap justify-between'>
                     <div className='w70 mobile-product-card  flex justify-center items-start '>
                         {product.product ? 
                         <Card product={product.product}
-                        productwidth='w80'
+                        productwidth='w100'
                         details={true}
                         showviewproductbutton={false}
+                        
                         />
                         :
                         (loadingProduct())
                         }
                     </div>
-                    <div className='bg-red-400 w30 mobile-product-card  flex justify-center items-center flex-wrap border-2 border-black  '>
-                        <div className='w100 flex justify-center text-white font-black text-xl bg-green-500 my-5'>
+                    <div className='w30 mobile-product-card  flex justify-center items-center flex-wrap border-2 border-black  related_heading'>
+                        <div className='w100 flex justify-center text-white font-black text-xl  my-5 related_heading_inner'>
                             <h1>Related Products</h1>
                         </div>
                         {

@@ -43,8 +43,8 @@ const Search_dropdown = () => {
         onChange={(e) => setCategoryIdContext(e.target.value)}
         value={categoryIdContext}
       >
-        <option value='All'>All Categories</option>
-        {categories && categories.map((c, i) => (
+        <option value='all'>All Categories</option>
+        {categories && categories.length > 0 && categories.map((c, i) => (
           <option key={i} value={c._id}>{c.name}</option>
         ))}
       </select>

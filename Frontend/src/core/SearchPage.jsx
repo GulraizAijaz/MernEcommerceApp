@@ -1,12 +1,12 @@
 import { useLocation, useSearchParams } from 'react-router-dom';
 import Layout from './Layout';
 import { list, getCategories } from '../core/apiCore';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useCallback } from 'react';
 import ProductGrid from './produc-grid';
 import {SearchContext} from '../context/SearchContext'
-
+import { debounce } from './debounce';
 const SearchPage = () => {
-
+    // gathering the contexts required (query , caegory) and thier setters too!  
     const { querySearched , setquerySearched , categoryIdContext , setCategoryIdContext } = useContext(SearchContext)
     const [searchParams, setSearchParams] = useSearchParams();    
     const [data,setData] = useState({
@@ -25,15 +25,16 @@ const SearchPage = () => {
     // to load categories inititally
     useEffect(() => {
     loadCategories();
-    searchData(querySearched,categoryIdContext)
+    debouncedSearch(querySearched,categoryIdContext)
     }, [searchParams]);
 
     const searchData  = (query="",catId="")=>{
+        setData({...data,error:true,searched:false})
         query = query?.trim()
         list({search:query , category:catId })
         .then(res=>{
             if(res.error){
-                setData({...data,error:true})
+                setData({...data,error:true,searched:true})
             }
             else{
                setData(prev => ({
@@ -45,7 +46,10 @@ const SearchPage = () => {
 
             }
         })
+        .catch(err=>console.log(err))
     }
+    const debouncedSearch = useCallback(debounce(searchData, 200), []);
+
      const loadCategories = ()=>{
             getCategories().then(res=>{
                 if(res.error){
@@ -62,7 +66,7 @@ const SearchPage = () => {
 
     const noResults = ()=>{
         return(
-            isEmptySearch ?
+            result.length < 1 && searched ?
             <div className='py-4 no-results results-wrap bg-red-600 text-white'>
                 <h2 className='text-center text-4xl'>Oops!</h2>
                 <p className='text-center text-2xl'>No Results Found</p>
@@ -72,9 +76,20 @@ const SearchPage = () => {
             ""
         )
     }
+    const searchingProducts = ()=>{
+        return(
+            !searched  ?
+            <div className='py-4 no-results results-wrap bg-yellow-600 text-white'>
+                <h2 className='text-center text-4xl'>Searching Products.......</h2>
+                <p className='text-center text-2xl'>PLEASE WAIT</p>
+            </div>
+            :
+            ""
+        )
+    }
     const Results = (products)=>{
         return(
-            !isEmptySearch &&
+            products.length > 0 ?
             <div>
                 <div className='py-4 results_dets results-wrap'>
                     {querySearched && 
@@ -91,6 +106,8 @@ const SearchPage = () => {
                 </div>
                 <ProductGrid products={products} />
             </div>
+            :
+            ""
         )
     }
         // handle keydown for input
@@ -106,7 +123,7 @@ const SearchPage = () => {
                 query: querySearched,
                 categoryId: categoryIdContext 
             });
-            searchData(querySearched,categoryIdContext)
+            debouncedSearch(querySearched,categoryIdContext)
         }
     // ui search form row
         const searchForm = ()=>(
@@ -120,7 +137,7 @@ const SearchPage = () => {
             <div className='search_dets_wrap flex justify-center '>
 
                 <select className='w20 py-2 pr-2 custom_border pl-3' onChange={(e)=>{setCategoryIdContext(e.target.value)}} value={categoryIdContext}>
-                    <option value='All'>All Categories</option>
+                    <option value='all'>All Categories</option>
                     {
                         categories && categories.length > 0 && categories.map((c,i)=>(
                                 <option key={i} value={c._id}>{c.name}</option>
@@ -144,6 +161,7 @@ const SearchPage = () => {
 
   return (
     <Layout title="Search Page" description="Search Products Here "className='search_main'>
+    {searchingProducts()}
     {searchForm()}
     {noResults()}
     {Results(result)}

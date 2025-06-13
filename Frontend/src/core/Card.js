@@ -17,6 +17,7 @@ const Card = ({ product,
                 cartUpdate = false,
                 showRemoveFromCart=false,
                 updateCartUi,
+                classes = ""
                  }) => {
   const navigate = useNavigate();
   const [redirect,setRedirect] = useState(false)
@@ -127,7 +128,7 @@ const Card = ({ product,
 
 
   return (
-    <div className={`${productwidth}  flex flex-col justify-between items-center product-card rounded-3xl text-center`}>
+    <div className={`${productwidth}  flex flex-col justify-between items-center product-card rounded-3xl text-center ${classes}`}>
       <ShowImage
         item={product}
         url='product'
