@@ -178,7 +178,7 @@ const Card = ({ product,
                             <span className=''>{product.quantity > 0 ? (showAvailable()):(showUnavailable())}</span>
             </p>
           </div>
-          <div className='flex justify-between w100 flex-wrap'>
+          <div className='flex justify-between w100 flex-wrap card_bottoms_wrap'>
             {showviewproductbutton ? (
               <Link to={`/product/${product._id}`}>
                 <button className='   product_card_btn'>

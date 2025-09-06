@@ -9,13 +9,15 @@ const CheckboxPrices = ({prices,handleFilters}) => {
     }
     return prices.map((p,i)=>(
         <div key={i} className='text-xl'>
+            <label  >
             <input
             value={`${p._id}`}
-            name={p}
+            name={'price'}
             onChange={handlechange}
             type='radio'
             />
-            <label >{p.name}</label>
+            {p.name}  
+            </label>
         </div>))
 }
 

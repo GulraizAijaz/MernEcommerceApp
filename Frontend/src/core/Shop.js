@@ -1,18 +1,18 @@
 import { isAuthenticated } from '../auth'
 import { useState,useEffect } from 'react'
 import Layout from "./Layout"
-import Card from './Card'
 import { getCategories,getFilteredProducts } from './apiCore'
 import CheckboxCategories from './CheckboxCategories'
 import {prices} from './fixedPrices'
 import CheckboxPrices from './CheckboxPrices'
-
+import ProductGrid from './produc-grid'
 
 const Shop = ()=>{
-
     const [myFilters,setMyFilters] = useState({
         filters:{category:[],price:[]}
     })
+
+    const [filterOpen,setFilterOpen] = useState(false)
     const [categories,setCategories] = useState([])
     const [error,setError] = useState(false)
     const [limit,setLimit] = useState(20)
@@ -20,9 +20,12 @@ const Shop = ()=>{
     const [size,setSize] = useState(0)
     const [filteredResults,setFilteredResults] = useState([])
     let user = ""
-    isAuthenticated() ? user = isAuthenticated().user.name : user = "sign in to buy something"
+    isAuthenticated() ? user = isAuthenticated().user.name : user = 'But sign in First 😁'
     
-
+    const toggleFilter = () => {
+        setFilterOpen(!filterOpen);
+        !filterOpen ? document.body.classList.add('no-scroll') : document.body.classList.remove('no-scroll')
+    };
     const init = ()=>{
         getCategories().then(res=>{
             if(res.error){
@@ -63,11 +66,11 @@ const Shop = ()=>{
         return(
             size > 0 &&
             size >= limit && (
-            <div className='w100 flex justify-center py-5'>
+            <div className='w100 flex justify-center py-5 load_more_btn_wrap'>
                 <button
                 onClick={loadMore}
-                className='bg-orange-500 p-3 rounded-full text-white'>
-                    Load More Products
+                className='p-3 rounded-full text-white custom_btn'>
+                    <span>Load More Products</span>
                 </button>
             </div>
             )
@@ -76,6 +79,7 @@ const Shop = ()=>{
 
     useEffect(()=>{
         init()
+        loadFilterResults(myFilters.filters)
     },[])
 
     const handleFilters = (filters,filterBy)=>{
@@ -85,7 +89,7 @@ const Shop = ()=>{
             let priceValues = handlePrice(filters)
             newFilters.filters[filterBy] = priceValues
         }
-        loadFilterResults(myFilters.filters)
+        loadFilterResults(newFilters.filters)
         setMyFilters(newFilters)
     }
     const handlePrice = value => {
@@ -102,20 +106,27 @@ const Shop = ()=>{
 
     return(
         <Layout title='Shop page'
+        className='shop_page'
         description={`Lets do some shopping today (${user})`}
         >
-        <div className='w100 flex justify-between flex-wrap'>
-            <div className='w20 cart-product bg-green-500 '>
-                <p className='text-2xl  px-2 font-black'>Filter Products By Categories</p>
-                <ul className='px-2 bg-pink-400'>
+        <div className='w-full flex justify-between flex-wrap inner_wrapper'>
+            <button onClick={toggleFilter} id='open_filters' className='mobile_filter_icon' style={{display: filterOpen ? 'none' : ""}}>
+                filters
+            </button>
+            <div className={`filters_wrap ${filterOpen ? 'open' : ""}`}>
+                <button onClick={toggleFilter} className='close_icon_filters'>
+                    X
+                </button>
+                <p className='custom_heading'>Filter Products By Categories</p>
+                <ul className='filters_list'>
                     <CheckboxCategories categories={categories}
                     handleFilters={filters=>
                         handleFilters(filters,'category')
                         }
                     />
                 </ul>
-                <p className='text-2xl  px-2 font-black'>Filter Products By price ranges</p>
-                    <div className='bg-pink-400'>
+                <p className='custom_heading'>Filter Products By price ranges</p>
+                    <div className='filters_list'>
                         <CheckboxPrices
                         prices={prices} 
                         handleFilters={filters=>
@@ -125,14 +136,11 @@ const Shop = ()=>{
                     />
                     </div>
             </div>
-            <div className='w80 cart-product bg-pink-300'>
-            <div className='flex justify-evenly flex-wrap products-wrap'>
-                {filteredResults.map((p,i)=>(
-                    <Card product={p} key={i}/>
-                ))} 
-            </div>
+             <ProductGrid products={filteredResults} >
                 {loadMoreBtn()}
-            </div>
+             </ProductGrid>
+
+            
         </div>
         </Layout>
 

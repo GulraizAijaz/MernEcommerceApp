@@ -22,12 +22,14 @@ const CheckboxForCategories = ({categories,handleFilters}) => {
     }
   return categories.length > 0 && categories.map((c,i)=>(
         <li key={i} className='text-xl'>
+            <label >
             <input
             value={checked.indexOf(c._id === -1)}
             onChange={handleToggle(c._id)}
             type='checkbox'
             />
-            <label >{c.name}</label>
+                {c.name}
+            </label>
         </li>
     ))
   

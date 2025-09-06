@@ -157,13 +157,13 @@ const Menu = () => {
           {isAuthenticated() && isAuthenticated().user.role === 1 ? (adminDashboardRoute()) : null  }
           {!isAuthenticated() && (
             <>
-              <li className={`nav-links  `}>
-                <Link className={`hover_links relative ${isActive('/signin')}`} to='/signin'>
+              <li className={`nav-links  link_sign_in_up`}>
+                <Link className={`hover_links relative sign_btn ${isActive('/signin')}`} to='/signin'>
                   <div >Login</div>
                 </Link>
               </li>
-              <li className={`nav-links  `}>
-                <Link className={`hover_links relative ${isActive('/signup')}`} to='/signup'>
+              <li className={`nav-links  link_sign_in_up`}>
+                <Link className={`hover_links relative sign_btn ${isActive('/signup')}`} to='/signup'>
                   <div>Sign Up</div>
                 </Link>
               </li>
@@ -237,13 +237,13 @@ const Menu = () => {
                   {isAuthenticated() && isAuthenticated().user.role === 1 ? (adminDashboardRoute()) : null  }
                   {!isAuthenticated() && (
                     <>
-                      <li onClick={hideSidebar} className={`nav-links`}>
-                        <Link className={`hover_links relative ${isActive('/signin')}`} to='/signin'>
+                      <li onClick={hideSidebar} className={`nav-links `}>
+                        <Link className={`hover_links relative sign_btn ${isActive('/signin')}`} to='/signin'>
                           <div className='p-1'>Login</div>
                         </Link>
                       </li>
                       <li onClick={hideSidebar} className={`nav-links`}>
-                        <Link className={`hover_links relative ${isActive('/signup')}`} to='/signup'>
+                        <Link className={`hover_links relative sign_btn ${isActive('/signup')}`} to='/signup'>
                           <div className='p-1'>Sign Up</div>
                         </Link>
                       </li>
