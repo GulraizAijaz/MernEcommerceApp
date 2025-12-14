@@ -16,6 +16,7 @@ import AddProduct from './admin/AddProduct';
 import UpdateProduct from './admin/UpdateProduct';
 import Shop from './core/Shop';
 import Product from './core/Product'
+import Chat from './core/Chat'
 import Cart from './core/Cart';
 import Orders from './admin/Orders';
 import Profile from './user/Profile'
@@ -140,6 +141,12 @@ const Routes = ()=> {
         // path : '/search/:query?/:categoryId?/:categoryName?',
         path : '/search/:query?/:categoryId?/:categoryName?',
         element:<Search/>,
+        errorElement: <ErrorPage />,
+      },
+      {
+        // path : '/search/:query?/:categoryId?/:categoryName?',
+        path : '/chat-with-us',
+        element:<Chat/>,
         errorElement: <ErrorPage />,
       },
 

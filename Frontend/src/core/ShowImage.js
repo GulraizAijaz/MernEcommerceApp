@@ -1,12 +1,13 @@
 import React from 'react'
 import { API } from '../config'
+import { Link } from 'react-router-dom'
 const ShowImage = ({item,url}) => {
   return (
-    <div className='w100 flex justify-center product-img '>
+    <Link to={`/product/${item._id}`} className='w100 flex justify-center product-img '>
         <img 
         alt={item.name}
         src={`${API}/${url}/photo/${item._id}`}/>
-    </div>
+    </Link>
   )
 }
 

@@ -1,5 +1,5 @@
 import Card from "./Card"
-const productGrid = ({products, children})=>{
+const ProductGrid = ({products, children})=>{
     return(
         <div className='flex justify-center flex-wrap products-wrap'>
             {products && products.length > 0 ? products.map((product,i)=>(
@@ -9,7 +9,7 @@ const productGrid = ({products, children})=>{
         </div>  
     )
 }
-export default productGrid
+export default ProductGrid
 
 
 

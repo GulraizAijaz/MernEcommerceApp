@@ -45,9 +45,9 @@ const Product = (props)=>{
         loadSignleProduct(productId)
     },[productId])
     return(
-        <Layout title={`product (${product.product ? product.product.name : "name"})`} description="Product Full Details"className='bg-gray-200'>
-                <div className='p-2 w100 flex flex-wrap justify-between'>
-                    <div className='w70 mobile-product-card  flex justify-center items-start '>
+        <Layout title={`product (${product.product ? product.product.name : "name"})`} description="Product Full Details"className=''>
+                <div className='p-2 w100 flex  justify-between '>
+                    <div className='w70 px-2 mobile-product-card  flex justify-center items-start self-start'>
                         {product.product ? 
                         <Card product={product.product}
                         productwidth='w100'

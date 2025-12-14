@@ -1,17 +1,23 @@
 const express = require("express");
 const router = express.Router();
+
 const {requireSignIn,isAuth,isAdmin} = require("../controllers/auth");
-const {userById,
-       addOrderToUserHistory,
-       addOrderToUserHistoryCod
+const 
+    {
+        userById,
+        addOrderToUserHistory,
+        addOrderToUserHistoryCod
     } = require("../controllers/user");
-const {create,
-    listOrders,
-    getStatusValues,
-    orderById,
-    updateOrderStatus,
-    addTransactionIdToCod
-} = require("../controllers/order")
+const 
+    {
+        create,
+        listOrders,
+        getStatusValues,
+        orderById,
+        updateOrderStatus,
+        addTransactionIdToCod
+    } = require("../controllers/order")
+    
 const {decreaseQuantity,decreaseQuantityCod} = require('../controllers/product')
 
 router.post(

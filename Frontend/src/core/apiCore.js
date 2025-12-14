@@ -1,17 +1,22 @@
 import { API } from "../config"
 import queryString from "query-string"
+
 export const getProducts = (sortBy)=>{
     return fetch(`${API}/products?sortBy=${sortBy}&order=desc&limit=10`,{
       method:"GET",
     })
-    .then(response=> {
-      // console.log(response)
-      return response.json()
-    })
-    .catch(error=> {
-        console.log(error)
-        return error
-    })
+    // .then(response=> {
+    //   return response.json()
+    // })
+    // .catch(error=> {
+    //     return error
+    // })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+      return response.json();
+    });
   }
 
   export const getCategories = ()=>{
@@ -69,6 +74,24 @@ export const getProducts = (sortBy)=>{
         return error
     })
   }
+
+  export const getAllUsersPublic = (id)=>{ 
+  return fetch(`${API}/allusers/${id}`,{
+    method:"GET",
+    headers:{
+      Accept :'application/json',
+      "Content-Type":"application/json",
+    },
+  })
+  .then(response=> {
+    
+    return response.json()
+  })
+  // .catch(error=> {
+  //     // console.log(error)
+  //     return error
+  // })
+}
 
   export const readSingleProduct = (productId)=>{
     return fetch(`${API}/product/${productId}`,{

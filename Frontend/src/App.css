@@ -783,6 +783,19 @@ body.no-scroll{
   border: 1px solid #505050;
   box-shadow: 0px 0px 11px 1px #00000080;
 }
+.loader-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-block: 0.5rem;
+  background: transparent;
+}
+.loader-wrap svg{
+  width: 32px;
+  height: 32px;
+  animation: loaderRotate 1.2s linear infinite;
+}
 
 @media (width <= 950px){
   .filters_wrap{
@@ -922,4 +935,16 @@ body.no-scroll{
 }
 
 
+}
+
+@keyframes loaderRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  80% {
+    transform: rotate(320deg); /* fast spin in first 80% */
+  }
+  100% {
+    transform: rotate(360deg); /* slow down for last 20% */
+  }
 }

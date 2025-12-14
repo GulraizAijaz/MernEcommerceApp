@@ -1,6 +1,6 @@
 import { useState,useEffect } from 'react'
 import { getCategories,list } from './apiCore'
-import ProductGrid from './produc-grid'
+import ProductGrid from './productGrid'
 
 
 const Search = ()=>{

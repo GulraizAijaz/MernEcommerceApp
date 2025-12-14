@@ -6,6 +6,7 @@ const asyncHandler = require("express-async-handler")
 const {expressjwt: expressJwt} = require("express-jwt");
 // for authorization check
 const {errorHandler} = require('../helpers/dbErrorHandler');
+
 // sign up 
 
 exports.signUp = async (req,res)=>{    
@@ -44,8 +45,10 @@ exports.signIn = async (req,res)=>{
 try{
     // find the user based on email
     const {email,password} = req.body;
+    console.log(email,password)
     const userExist = await User.findOne({email:email})
-    if(!userExist){
+
+    if(!userExist){ 
         return res.status(400).json({
                     err:"user with that email doesn't exists.please try sign up"
                 })
@@ -61,7 +64,7 @@ try{
         
             // generate a signed token with user id and secret
         
-            const token = jwt.sign({_id:userExist.id},process.env.JWT_SECRET,  { algorithm: 'HS256', expiresIn: '1d' })
+            const token = jwt.sign({_id:userExist.id,name:userExist.name},process.env.JWT_SECRET,  { algorithm: 'HS256', expiresIn: '1d' })
             // persist the token as t in cookie with expiry date
             res.cookie('t',token
                 ,{expire: new Date()+99999}
@@ -102,7 +105,7 @@ exports.requireSignIn = expressJwt({
 })
     
 exports.isAuth = (req,res,next)=>{
-    let user = req.profile && req.auth && req.profile._id == req.auth._id;
+    let user = req.profile && req.auth && req.profile._id.toString() === req.auth._id;
     if(!user){
         return res.status(403).json({
             error:"UnAuthorized User"
@@ -110,8 +113,18 @@ exports.isAuth = (req,res,next)=>{
     }
     next()
 }
+// exports.isAuth = (req,res,next)=>{
+//     let user = req.profile && req.auth && req.profile._id.toString() === req.auth._id.toString();
+//     if(!user){
+//         return res.status(403).json({
+//             error:"UnAuthorized User"
+//         })
+//     }
+//     next()
+// }
 
 exports.isAdmin = (req,res,next)=>{
+    
     let role = req.profile.role;
 
     if(role === 0){

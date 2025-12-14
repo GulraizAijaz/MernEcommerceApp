@@ -18,6 +18,20 @@ exports.userById = async (req, res,next,id) => {
     }
     
 };
+exports.userByIdPublic = async (req, res,next,id) => {
+    try{
+        const user = await User.findById(id);
+        if(!user){
+            return res.status(400).json({error:"user not found"})
+        }
+            req.id = user._id;
+            next();
+    }
+    catch(error){
+        console.log(error)
+    }
+    
+};
 exports.adminUserbyId = async (req, res,next,id)=>{
     try{
         const user = await User.findById(id);
@@ -214,7 +228,6 @@ exports.purchaseHistory = async(req,res)=>{
 }
 exports.allUsers = async(req,res)=>{
     try{
-        console.log("admin id",req.profile._id)
         const users = await 
         User.find({
             _id: { $ne: req.profile._id }
@@ -233,6 +246,27 @@ exports.allUsers = async(req,res)=>{
         console.log(err)
     }
 }
+exports.allUsersPublic = async(req,res)=>{
+    try{
+        const users = await 
+        User.find({
+            _id: { $ne: req.id }
+        })
+        .select("_id name")
+        .exec()
+
+        if(!users){
+            return res.status(400).json({
+                error : "no users available"
+            })
+        }
+        return res.status(200).json(users)
+    }
+    catch(err){
+        console.log(err)
+    }
+}
+
 
 exports.userReadForAdmin = async(req,res)=>{
     try{

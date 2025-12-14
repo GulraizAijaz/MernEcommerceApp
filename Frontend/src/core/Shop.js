@@ -5,7 +5,7 @@ import { getCategories,getFilteredProducts } from './apiCore'
 import CheckboxCategories from './CheckboxCategories'
 import {prices} from './fixedPrices'
 import CheckboxPrices from './CheckboxPrices'
-import ProductGrid from './produc-grid'
+import ProductGrid from './productGrid'
 
 const Shop = ()=>{
     const [myFilters,setMyFilters] = useState({

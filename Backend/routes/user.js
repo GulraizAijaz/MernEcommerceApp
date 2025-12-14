@@ -14,7 +14,9 @@ const {
         allUsers,
         userReadForAdmin,
         updateByAdmin,
-        userDeleteByAdmin
+        userDeleteByAdmin,
+        allUsersPublic,
+        userByIdPublic
       } = require("../controllers/user");   
 
 router.get('/user/:userId',requireSignIn,isAuth,read)
@@ -26,9 +28,11 @@ router.post('/user/update/:userId/:updateId',requireSignIn,isAuth,isAdmin,update
 router.get('/user/get/:userId/:updateId',requireSignIn,isAuth,isAdmin,userReadForAdmin)
 router.delete('/user/delete/:userId/:updateId',requireSignIn,isAuth,isAdmin,userDeleteByAdmin)
 
-
+router.get('/allusers/:userIdPublic',allUsersPublic)
  
+
 router.param("userId",userById) 
+router.param("userIdPublic",userByIdPublic) 
 router.param("updateId",adminUserbyId) 
  
 

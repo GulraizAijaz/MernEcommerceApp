@@ -2,7 +2,7 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import Layout from './Layout';
 import { list, getCategories } from '../core/apiCore';
 import { useEffect, useState, useContext, useCallback } from 'react';
-import ProductGrid from './produc-grid';
+import ProductGrid from './productGrid';
 import {SearchContext} from '../context/SearchContext'
 import { debounce } from './debounce';
 const SearchPage = () => {

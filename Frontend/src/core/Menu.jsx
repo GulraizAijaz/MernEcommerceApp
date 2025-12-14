@@ -49,15 +49,7 @@ const Menu = () => {
     menuIconRef.current.style.display = ""
     document.body.classList.remove('no-scroll')
   };
-    const handleMouseEnter = () => {
-    // let dynamicHeight = searchDropDownRef.current.scrollHeight + 100
-    // searchDropDownRef.current.style.minHeight =  "0px";
-    // searchDropDownRef.current.style.minHeight = dynamicHeight + "px";
-  };
 
-  const handleMouseLeave = () => {
-    // searchDropDownRef.current.style.minHeight = '0px';
-  };
 
 
   const isActive = (path) => {
@@ -153,6 +145,11 @@ const Menu = () => {
               <div className='p-1'><AddShoppingCartIcon fontSize='large'/></div>
             </Link>
           </li>
+          <li className={`nav-links  `}>
+            <Link className={`hover_links relative ${isActive('/chat-with-us')}`} to='/chat-with-us'>
+              <div className='p-1'>Chat test</div>
+            </Link>
+          </li>
           {isAuthenticated() && isAuthenticated().user.role === 0 ? (userDashboardRoute()) : null  }
           {isAuthenticated() && isAuthenticated().user.role === 1 ? (adminDashboardRoute()) : null  }
           {!isAuthenticated() && (
@@ -180,6 +177,7 @@ const Menu = () => {
               
             )
           )}
+          
         </ul>
       </div>
       {/* ------mobile side bar ----- */}
@@ -228,6 +226,11 @@ const Menu = () => {
                         <span className="cart-badge p-1 text-xs">{cartItemsLength}</span>
                         </Link>
                   </li>
+                  <li onClick={hideSidebar} className={`nav-links`}>
+                        <Link className={`hover_links relative sign_btn ${isActive('/chat-with-us')}`} to='/chat-with-us'>
+                          <div className='p-1'>Chat With Us</div>
+                        </Link>
+                      </li>
                   <li onClick={hideSidebar} className={`nav-links`}>
                     <Link className={`hover_links relative ${isActive('/shop')}`} to='/shop'>
                       <div className='p-1'><AddShoppingCartIcon fontSize='large'/></div>
