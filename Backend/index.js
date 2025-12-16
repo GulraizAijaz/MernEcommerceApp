@@ -50,7 +50,7 @@ app.get("/", async(req,res)=>{
     // const msg = await Message.find()
     res.json({
       // messages:msg,
-      test:"hi from my store"
+      test:"hi from my store (new changes received)"
     })
 })
 
