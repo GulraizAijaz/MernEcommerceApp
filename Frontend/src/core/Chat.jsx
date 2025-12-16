@@ -49,6 +49,28 @@ export default function ChatPage() {
       }
     });
     
+    // socket.on("private message", (data) => {
+    //   const sender = data.fromUserId;
+    //   const recipient = data.toUserId;
+
+    //   // If message is in currently opened chat
+    //   if (toUserId && (sender === toUserId || recipient === toUserId)) {
+    //     setMsgs((prev) => [...prev, data]);
+    //     scrollToBottom();
+    //     setUnreadCount((prev) => ({ ...prev, [sender]: 0 }));
+    //   } 
+    //   // Message sent by me
+    //   else if (sender === userId) {
+    //     setMsgs((prev) => [...prev, data]);
+    //     scrollToBottom();
+    //   } 
+    //   // Message from other users → increment unread
+    //   else {
+    //     setUnreadCount((prev) => ({ ...prev, [sender]: (prev[sender] || 0) + 1 }));
+    //   }
+    // });
+
+    //by deep seek
     socket.on("private message", (data) => {
       const sender = data.fromUserId;
       const recipient = data.toUserId;
@@ -58,6 +80,11 @@ export default function ChatPage() {
         setMsgs((prev) => [...prev, data]);
         scrollToBottom();
         setUnreadCount((prev) => ({ ...prev, [sender]: 0 }));
+        
+        // MARK AS SEEN IN DATABASE - NEW
+        if (socketRef.current) {
+          socketRef.current.emit("mark seen", { fromUserId: sender });
+        }
       } 
       // Message sent by me
       else if (sender === userId) {

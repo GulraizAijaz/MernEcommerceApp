@@ -45,3 +45,60 @@ exports.errorHandler = error => {
 
     return message;
 };
+
+
+
+// by deep seek
+const mongoose = require("mongoose");
+
+exports.validateMessageInput = (data) => {
+  const errors = [];
+
+  if (!data.toUserId || !mongoose.Types.ObjectId.isValid(data.toUserId)) {
+    errors.push("Invalid user ID");
+  }
+
+  if (!data.message || typeof data.message !== "string") {
+    errors.push("Message must be a string");
+  } else {
+    const trimmed = data.message.trim();
+    if (trimmed.length === 0) {
+      errors.push("Message cannot be empty");
+    }
+    if (trimmed.length > 1000) {
+      errors.push("Message too long (max 1000 characters)");
+    }
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors
+  };
+};
+
+exports.validateMessageId = (messageId, userId) => {
+  const errors = [];
+
+  if (!messageId || !mongoose.Types.ObjectId.isValid(messageId)) {
+    errors.push("Invalid message ID");
+  }
+
+  if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+    errors.push("Invalid user ID");
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors
+  };
+};
+
+exports.validateChatPartner = (userId) => {
+  if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+    return {
+      isValid: false,
+      error: "Invalid user ID"
+    };
+  }
+  return { isValid: true };
+};

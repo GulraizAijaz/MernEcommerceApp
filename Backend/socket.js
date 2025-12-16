@@ -1,8 +1,8 @@
 const chatController = require("./controllers/chat");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET;
+const {validateMessageInput,validateMessageId,validateChatPartner} = require("./helpers/dbErrorHandler");
 
-const Message = require("./models/message");
 
 const onlineUsers = new Map();
 
@@ -58,6 +58,18 @@ function initSocket(io) {
     socket.on("private message", async ({ toUserId, message }) => {
       if (!socket.user) return; // socket is authenticated
 
+      // VALIDATION: Cannot message yourself
+      if (socket.user._id === toUserId) {
+        return socket.emit("error", { message: "Cannot message yourself" });
+      }
+
+       // VALIDATION: Input validation
+      const validation = validateMessageInput({ toUserId, message });
+      if (!validation.isValid) {
+        return socket.emit("error", { message: validation.errors[0] });
+      }
+
+
       const fromUserId = socket.user._id;
       const fromUsername = socket.user.name;
 
@@ -89,9 +101,41 @@ function initSocket(io) {
       socket.emit("private message", savedMessage);
     });
 
+
+    //deep seek
+    // ===== MARK AS SEEN (FOR REAL-TIME MESSAGES) =====
+    socket.on("mark seen", async ({ fromUserId }) => {
+      if (!socket.user) return;
+
+      // VALIDATION
+      const validation = validateChatPartner(fromUserId);
+      if (!validation.isValid) {
+        return socket.emit("error", { message: validation.error });
+      }
+      
+      await chatController.markMessagesAsSeen(socket.user._id, fromUserId);
+      
+      // Optionally, update unread counts
+      const allCounts = await chatController.getUnreadCounts(socket.user._id);
+      socket.emit("unread counts", allCounts);
+    });
+
+
+
     // ===== LOAD CHAT HISTORY =====
     socket.on("load chat", async ({ withUserId }) => {
       if (!socket.user) return;
+
+      // VALIDATION
+      const validation = validateChatPartner(withUserId);
+      if (!validation.isValid) {
+        return socket.emit("error", { message: validation.error });
+      }
+       // Cannot load chat with yourself
+      if (socket.user._id === withUserId) {
+        return socket.emit("error", { message: "Cannot chat with yourself" });
+      }
+
 
       // 1. Mark unseen messages as seen only for this chat
       await chatController.markMessagesAsSeen(socket.user._id, withUserId);
@@ -112,6 +156,27 @@ function initSocket(io) {
     socket.on("message edited", async ({ messageId, newText, toUserId }) => {
       if (!socket.user) return;
 
+      // VALIDATION: Message ID and new text
+      const validation = validateMessageId(messageId, socket.user._id);
+      if (!validation.isValid) {
+        return socket.emit("error", { message: validation.errors[0] });
+      }
+
+      if (!newText || typeof newText !== "string" || newText.trim().length === 0) {
+        return socket.emit("error", { message: "Invalid message text" });
+      }
+
+      if (newText.trim().length > 1000) {
+        return socket.emit("error", { message: "Message too long" });
+      }
+
+      // VALIDATION: toUserId
+      const partnerValidation = validateChatPartner(toUserId);
+      if (!partnerValidation.isValid) {
+        return socket.emit("error", { message: partnerValidation.error });
+      }
+
+
       const msg = await chatController.editMessage(socket.user._id,messageId,newText);
 
 
@@ -128,6 +193,18 @@ function initSocket(io) {
     socket.on("message deleted", async ({ messageId, toUserId }) => {
       if (!socket.user) return;
 
+       // VALIDATION
+      const validation = validateMessageId(messageId, socket.user._id);
+      if (!validation.isValid) {
+        return socket.emit("error", { message: validation.errors[0] });
+      }
+
+      const partnerValidation = validateChatPartner(toUserId);
+      if (!partnerValidation.isValid) {
+        return socket.emit("error", { message: partnerValidation.error });
+      }
+
+
       const msg = await chatController.deleteMessage(socket.user._id,messageId)
 
       const receiverSocketId = onlineUsers.get(toUserId);
@@ -137,6 +214,11 @@ function initSocket(io) {
 
       // Update sender
       socket.emit("message deleted", msg);
+    });
+
+     // ===== ERROR HANDLER =====
+    socket.on("error", (error) => {
+      console.error("Socket error from client:", error);
     });
 
     // ===== DISCONNECT =====

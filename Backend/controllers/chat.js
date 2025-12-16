@@ -43,17 +43,50 @@ exports.deleteMessage = async (userId, messageId) => {
 };
 
 
-exports.markMessagesAsSeen = async (fromUserId, toUserId) => {
+// exports.markMessagesAsSeen = async (fromUserId, toUserId) => {
+//   await Message.updateMany(
+//     { fromUserId, toUserId, seen: false },
+//     { $set: { seen: true } }
+//   );
+// };
+
+//by deep seek
+exports.markMessagesAsSeen = async (userId, withUserId) => {
   await Message.updateMany(
-    { fromUserId, toUserId, seen: false },
+    { 
+      fromUserId: withUserId,  // Messages FROM the other person
+      toUserId: userId,        // TO me
+      seen: false 
+    },
     { $set: { seen: true } }
   );
 };
 
 // Returns unread count per sender for a user
+// exports.getUnreadCounts = async (userId) => {
+//   const counts = await Message.aggregate([
+//     { $match: { toUserId: userId, seen: false } },
+//     { $group: { _id: "$fromUserId", count: { $sum: 1 } } }
+//   ]);
+
+//   // Convert to object { senderId: count }
+//   const result = {};
+//   counts.forEach(c => {
+//     result[c._id] = c.count;
+//   });
+
+//   return result;
+// };
+
+//by deep seek
 exports.getUnreadCounts = async (userId) => {
   const counts = await Message.aggregate([
-    { $match: { toUserId: userId, seen: false } },
+    { 
+      $match: { 
+        toUserId: userId,    // Messages TO the current user
+        seen: false 
+      } 
+    },
     { $group: { _id: "$fromUserId", count: { $sum: 1 } } }
   ]);
 
