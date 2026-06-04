@@ -7,6 +7,7 @@ const {isAuth,isAdmin,requireSignIn} = require('../controllers/auth')
 
 router.post("/category/create/:userId",requireSignIn,isAdmin,isAuth, create);
 router.get('/category/getcategories',getCategoriesList)
+router.get('/category/getcategories/hard-coded',getCategoriesListHardCoded)
 router.get('/category/:categoryId',read)
 router.put("/category/update/:userId",requireSignIn,isAdmin,isAuth,update)
 router.delete("/category/delete/:userId",requireSignIn,isAdmin,isAuth,remove)
