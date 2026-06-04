@@ -61,6 +61,39 @@ catch(err){
 }
 }
 
+exports.getCategoriesListHardCoded = async (req, res) => {
+  try {
+    const categories = [
+      {
+        _id: "1",
+        name: "Men",
+        slug: "men"
+      },
+      {
+        _id: "2",
+        name: "Women",
+        slug: "women"
+      },
+      {
+        _id: "3",
+        name: "Kids",
+        slug: "kids"
+      },
+      {
+        _id: "4",
+        name: "Accessories",
+        slug: "accessories"
+      }
+    ];
+
+    return res.status(200).json(categories);
+
+  } catch (err) {
+    console.error("Hardcoded categories error:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 exports.update = async(req,res)=>{
 try{
     const updatedcategory = await Category.findByIdAndUpdate(
